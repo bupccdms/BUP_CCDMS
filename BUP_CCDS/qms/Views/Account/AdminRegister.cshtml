@@ -1,0 +1,109 @@
+﻿@using qms.Utility;
+@model qms.Models.AdminRegisterViewModel
+@{
+    ViewBag.Title = "Super Admin User Create";
+}
+
+<div class="container">
+    <div class="row">
+        <h4 class="page-head-line">Security > Super Admin User Create</h4>
+        <div class="col-md-2"></div>
+        <div class="col-md-5">
+            @using (Html.BeginForm("AdminRegister", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary("", new { @class = "text-danger" })
+
+                if (ApplicationSetting.AllowActiveDirectoryUser)
+                {
+                    <div class="form-group">
+                        <div class="col-md-8">
+                            @Html.DropDownList("is_active_directory_user", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.is_active_directory_user, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <input type="hidden" id="is_active_directory_user" name="is_active_directory_user" value="0" />
+                }
+                <div class="form-group">
+                    @*@Html.LabelFor(m => m.Hometown, new { @class = "col-md-4 control-label" })*@
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(m => m.Hometown, new { @class = "form-control", @placeholder = "Full Name" })
+                        @Html.ValidationMessageFor(m => m.Hometown, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @*@Html.LabelFor(m => m.Email, new { @class = "col-md-4 control-label" })*@
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(m => m.Mobile, new { @class = "form-control", @placeholder = "Mobile" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @*@Html.LabelFor(m => m.Email, new { @class = "col-md-4 control-label" })*@
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @*@Html.LabelFor(m => m.Email, new { @class = "col-md-4 control-label" })*@
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control alphaNumericDot", @placeholder = "User Name", @autocomplete = "new-password" })
+                        @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div id="passwordDiv">
+                    <div class="form-group">
+                        @*@Html.LabelFor(m => m.Password, new { @class = "col-md-4 control-label" })*@
+                        <div class="col-md-8">
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password", @autocomplete = "new-password" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @*@Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-4 control-label" })*@
+                        <div class="col-md-8">
+                            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password", @autocomplete = "new-password" })
+                            @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+
+                    <div class="col-md-8">
+                        <input type="submit" class="btn btn-color" value="Register" />
+                        <a href='@Url.Action("Index", "DepartmentUsers")' class="btn btn-color">
+                            Back to List
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+<script>
+
+    $(document).ready(function () {
+
+        ChangeInternalExternalView($('#is_active_directory_user').val());
+
+        $('#is_active_directory_user').on('change', function () {
+            ChangeInternalExternalView(this.value);
+        });
+    });
+
+    function ChangeInternalExternalView(is_active_directory_user) {
+        if (is_active_directory_user > 0)
+            $("#passwordDiv").hide(150);
+        else
+            $("#passwordDiv").show(150);
+    }
+</script>

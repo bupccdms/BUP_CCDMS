@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewBag.Title = "Department List";
+}
+
+<h2>Department List</h2>
+
+<p>
+    @*<div><a href="@Url.Action("DepartmentList")"><button class="btn btn-color">Report PDF </button> </a></div>*@
+    <div><input type="button" value="Report" onclick="GenerateDepartmentListReport()" class="btn btn-color" /></div>
+</p>
+@*<div id="divpopupcontain"></div>*@
+
+@section scripts{
+    <script src="~/Scripts/sqms/report.js"></script>
+<script src="~/Scripts/jquery.fancybox-plus.js"></script>
+}
+
+
+ 

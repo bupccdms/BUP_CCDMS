@@ -1,0 +1,117 @@
+﻿@model qms.ViewModels.VMCustomContent
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+@{
+    ViewBag.Title = "Custom Content Edit";
+}
+<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+<div class="container">
+    <div class="row">
+        <h4 class="page-head-line">Custom Content > Edit</h4>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.custom_content_id)
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <input type="checkbox" id="ContentCheckbox" value="Content" /> Content
+                <div class="form-group">
+                    <div class="col-md-8">
+                        @*@Html.TextAreaFor(m => m.content, 3, 20, new { @class = "form-control Next", @id = "content", @row = "3", @placeholder = "Content" })*@
+                        @Html.TextAreaFor(m => m.content, 3, 20, new { @id = "content", @class = "form-control Next", @row = "3", @placeholder = "Content" })
+                        @Html.ValidationMessageFor(model => model.content, "", new { @class = "text-danger" })
+                        <script>
+                            CKEDITOR.replace("content");
+                        </script>
+                    </div>
+                </div>
+                <input type="checkbox" id="is_url" value="URL" /> URL
+                <div class="form-group">
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(m => m.url, new { @class = "form-control Next", @id = "url", @row = "3", @placeholder = "http://example.com/", @oninvalid = "this.setCustomValidity('Enter Valid URL')" })
+                        @Html.ValidationMessageFor(model => model.url, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-6">
+                        <input type="submit" value="Update" class="btn btn-color" />
+                        <button class="btn btn-color">
+                            @Html.ActionLink("Back to List", "Index")
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+@section scripts{
+
+    <script>
+        function checkval() {
+            if ($('#ContentCheckbox').is(':checked')) {
+                $('#cke_content').show();
+                $('#content').hide();
+                $('#url').hide();
+            }
+            else {
+                $('#cke_content').hide();
+                $('#content').hide();
+                $('#url').show();
+                textEditorHide();
+            }
+        }
+        function textEditorHide() {
+            var result = $('#is_url').val();
+            //var extension = file.split(".").pop();
+            if (result == "URL") {
+                $('#cke_content').hide();
+            }
+        }
+
+        //$(function () {
+        //    $('#url').hide();
+        //    $('#ContentCheckbox').click(function () {
+        //        $('#is_url').prop("checked", false);
+        //        checkval();
+        //    });
+        //    $('#is_url').click(function () {
+        //        $('#ContentCheckbox').prop("checked", false);
+        //        checkval();
+        //    });
+        //});
+        $(document).ready(function () {
+            //Update content
+            var url = $("#url").val();
+            if (url != "") {
+                $('#ContentCheckbox').prop("checked", false);
+                $('#is_url').prop("checked", true);
+                checkval();
+            } else {
+                $('#is_url').prop("checked", false);
+                $('#ContentCheckbox').prop("checked", true);
+                checkval();
+            }
+
+            //Event fire
+            $('#ContentCheckbox').click(function () {
+                $('#is_url').prop("checked", false);
+                checkval();
+            });
+            $('#is_url').click(function () {
+                $('#ContentCheckbox').prop("checked", false);
+                checkval();
+            });
+        });
+    </script>
+}
+

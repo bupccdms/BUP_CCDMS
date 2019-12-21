@@ -1,0 +1,165 @@
+﻿@model IEnumerable<qms.ViewModels.VMDepartmentScroll>
+@{
+    ViewBag.Title = "Department Scroll Information";
+}
+<div class="container">
+    <div class="row">
+        <h4 class="page-head-line">Department Scroll> List </h4>
+        <div class="row">
+            <div class="col-md-3" style="margin-bottom : 10px;">
+                <a href='@Url.Action("Create", "DepartmentScrolls")'>
+                    <button class="btn btn-color" style="margin-bottom : 10px;">Map Department Scroll</button>
+                </a>
+
+            </div>
+            <div class="col-md-6"></div>
+            <div class="col-md-3">
+                <input type="text" style="font-size: medium;background-color: lightyellow" class="pull-right col-md-3 form-control" placeholder="Search" id="filterBox" onkeyup="FilterTable()" />
+            </div>
+        </div>
+
+
+
+        <div class="col-md-12 scrollbar table-cont" id="table-cont">
+            <table class="table table-hover table-bordered" id="data">
+                <thead>
+                    <tr id="Hedding">
+                        <th></th>
+                        <th></th>
+                        <th>
+                            @Html.DisplayName("Department Name")
+                        </th>
+                        @*<th>
+                            @Html.DisplayName("Content (English)")
+                        </th>*@
+                        <th>
+                            @Html.DisplayName("Content")
+                        </th>
+                        <th></th>
+                        <th></th>
+                        <th>Scroll Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <button class="btn btn-color">
+                                    @Html.ActionLink("Publish To All", "PublishToAll", new { id = item.department_id, btnName = "ScrollON", deptScrollId = item.department_scroll_id })
+                                </button>
+                            </td>
+                            @*@if (item.is_publish == 1)
+                            {
+                            <td>
+                                <button class="btn btn-color">
+                                    @Html.Label("YES")
+                                    @Html.ActionLink("Publish To All", "")
+                                </button>
+                            </td>
+                            }
+                            else
+                            {
+                                <td style="background-color:#FF0000;">
+                                    @Html.Label("NO")
+                                </td>
+                            }*@
+                            <td>
+                                @if (item.is_publish == 1)
+                                {
+                                    <button class="btn btn-color btn_de">
+                                        @Html.Label("YES")
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-danger btn_custom">
+                                        @Html.Label("NO")
+                                    </button>
+                                }
+                            </td>
+                            <td style="text-align:center">
+                                @Html.DisplayFor(modelItem => item.department_name)
+                            </td>
+                            @*<td>
+                                @Html.DisplayFor(modelItem => item.content_en)
+                            </td>*@
+                            <td>
+                                @Html.DisplayFor(modelItem => item.content_bn)
+                            </td>
+                            <td>
+                                <button class="btn btn-color">
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.department_scroll_id })
+                                </button>
+
+                            </td>
+                            <td>
+                                <button class="btn btn-color">
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.department_scroll_id })
+                                </button>
+                            </td>
+                            <td>
+                                @if (item.is_active == 1)
+                                {
+                                    @Html.Label("ON")
+                                }
+                                else
+                                {
+                                    @Html.Label("OFF")
+                                }
+                            </td>
+                            @*<td>
+                                @if (item.is_active == 1)
+                                {
+                                    <button class="btn btn-color" onclick="SetActivationStatus('@item.department_scroll_id')">OFF</button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-color" onclick="SetActivationStatus('@item.department_scroll_id')">ON</button>
+                                }
+
+                            </td>*@
+                            <td>
+                                <button class="btn btn-color">
+                                    @Html.ActionLink("Unpublish To All", "PublishToAll", new { id = item.department_id, btnName = "ScrollOFF", deptScrollId = item.department_scroll_id })
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/sqms/department-scroll.js"></script>
+    <script src="~/Scripts/sqms/fixed-table.js"></script>
+    @{
+        if (TempData["message"] != null)
+        {
+            <script type="text/javascript">
+            var message = @((TempData["message"] != null).ToString().ToLower());
+
+            if (message == true)
+                toastr["success"]("Save Successfull.");
+            else
+                toastr["error"]("Save Fail.");
+            </script>
+        }
+
+        if (TempData["mgs"] != null)
+        {
+            <script type="text/javascript">
+            var message = @((TempData["mgs"] != null).ToString().ToLower());
+
+            if (message == true)
+                toastr["success"]("Update Successfull.");
+            else
+                toastr["error"]("Update Fail.");
+            </script>
+        }
+    }
+}
+

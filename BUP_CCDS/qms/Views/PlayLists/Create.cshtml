@@ -1,0 +1,43 @@
+﻿@model qms.Models.tblPlayList
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+@{
+    ViewBag.Title = "Play List Create";
+}
+<div class="container">
+    <div class="row">
+        <h4 class="page-head-line">Play List > Create</h4>
+        
+        <div class="col-md-12">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <div class="col-md-4">
+                        @Html.EditorFor(model => model.playlist_name, new { htmlAttributes = new { @class = "form-control Next", @placeholder = "Playlist Name" } })
+                        @Html.ValidationMessageFor(model => model.playlist_name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                
+                
+                
+                <div class="form-group">
+                    <div class="col-md-8">
+                        <input type="submit" value="Create" class="btn btn-color" />
+                        <button class="btn btn-color">
+                            @Html.ActionLink("Back to List", "Index")
+                        </button>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+
+
+    </div>
+</div>

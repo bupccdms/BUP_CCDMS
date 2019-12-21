@@ -1,0 +1,97 @@
+﻿@using Microsoft.AspNet.Identity
+@using qms.Utility
+@model IEnumerable<qms.ViewModels.VMDepartmentDeviceStatus>
+
+@{
+    ViewBag.Title = "Department Devices Status";
+}
+
+<script src="~/Scripts/jquery.signalR-2.2.3.min.js"></script>
+<script src="~/signalr/hubs"></script>
+
+<div class="container">
+    <div class="row">
+
+        <h4 class="page-head-line">Department > Devices Status </h4>
+        <input type="hidden" id="hid_department_id" value="@ViewBag.department_id"/>
+
+        <div class="col-md-12 scrollbar table-scroll" style="margin-bottom : 20px;">
+
+            <table class="table table-hover table-bordered" id="tblDeviceStatus">
+                <tr id="Hedding" style="text-align: center;">
+                    <th>
+                        @Html.DisplayName("Device No")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Status")
+                    </th>
+                    <th>
+                        @Html.DisplayName("User")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Login Time")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Idle From")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Current Tokenm")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Call Time")
+                    </th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.device_no)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.user_full_name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.login_time_formated)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.idle_from_formated)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.token_no_formated)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.call_time_formated)
+                    </td>
+
+                </tr>
+
+
+                }
+
+
+
+            </table>
+
+        </div>
+
+    </div>
+</div>
+<div id="dialog-message" title="Information">
+    <div id="body">
+
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/modal/modal.js"></script>
+
+    <script src="~/Scripts/jquery.signalR-2.2.3.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+
+    <script src="~/Scripts/sqms/device-status.js"></script>
+
+}

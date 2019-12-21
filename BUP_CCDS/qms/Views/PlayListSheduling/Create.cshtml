@@ -1,0 +1,58 @@
+﻿@model qms.ViewModels.VMPlayListSheduling
+@{
+    ViewBag.Title = "Play List Scheduling";
+}
+<div class="container">
+    <div class="row">
+
+        <h4 class="page-head-line">Play List Scheduling > Create </h4>
+
+        <div class="col-md-5">
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <div class="col-md-8">
+                        @Html.DropDownList("playlist_id", null, "Select One PlayList", htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.PlayList_id, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.when_start, new { htmlAttributes = new { @class = "form-control", @type = "datetime-local" } })
+                        @Html.ValidationMessageFor(model => model.when_start, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.duration, new { htmlAttributes = new { @class = "form-control", @placeholder = "Duration (Minuites)" } })
+                        @Html.ValidationMessageFor(model => model.duration, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-4">
+                        @Html.CheckBoxFor(model => model.bool_is_active, new { htmlAttributes = new { @class = "form-control" } }) Is Approve?
+                        @Html.ValidationMessageFor(model => model.bool_is_active, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-8">
+                        <input type="submit" value="Create" class="btn btn-color" />
+                        <button class="btn btn-color">
+                            @Html.ActionLink("Back to List", "Index")
+                        </button>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+
+</div>

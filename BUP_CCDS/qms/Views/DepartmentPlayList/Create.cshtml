@@ -1,0 +1,72 @@
+﻿@model qms.ViewModels.VMDepartmentPlayList
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+@{
+    ViewBag.Title = "Department Playlist Mapping";
+}
+<div class="container">
+    <div class="row">
+        <h4 class="page-head-line">Department Playlist > Mapping</h4>
+        @*<div class="col-md-1"></div>*@
+        <div class="col-md-5">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <div class="col-md-8">
+                        @Html.DropDownList("department_id", null, "Select One Department", htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.department_id, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-8">
+                        @Html.DropDownList("playlist_id", null, "Select One Content", htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.playlist_id, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-8">
+                        @Html.CheckBoxFor(model =>model.bool_is_priority, new { htmlAttributes = new { @class = "form-control" } }) Is priority?
+                        @Html.ValidationMessageFor(model => model.bool_is_priority, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-8">
+                        @if (((System.Collections.Generic.List<qms.Models.tblDepartment>)((System.Web.Mvc.MultiSelectList)ViewBag.department_id).Items).Count > 0
+                            && ((System.Collections.Generic.List<qms.Models.tblPlayList>)((System.Web.Mvc.MultiSelectList)ViewBag.playlist_id).Items).Count > 0)
+                        {
+                            <input type="submit" value="Create" class="btn btn-color" />
+                        }
+
+                        <button class="btn btn-color">
+                            @Html.ActionLink("Back to List", "Index")
+                        </button>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+
+
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            inp = $("#department_id option:selected").text();
+            if (inp == "Select One Department") {
+                $("#department_id").attr('disabled', false);
+            }
+            else $("#department_id").attr('disabled', true);
+        });
+
+    </script>
+
+}

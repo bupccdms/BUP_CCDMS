@@ -1,0 +1,135 @@
+﻿@model IEnumerable<qms.Models.tblDepartment>
+@{
+    ViewBag.Title = "Department Information";
+}
+<div class="container">
+    <div class="row">
+        <h4 class="page-head-line">Department > List </h4>
+        <div class="row">
+            <div class="col-md-3" style="margin-bottom : 10px;">
+                <a href='@Url.Action("Create", "Departments")'>
+                    <button class="btn btn-color" style="margin-bottom : 10px;">Create Department</button>
+                </a>
+
+            </div>
+            <div class="col-md-6"></div>
+            <div class="col-md-3">
+                <input type="text" style="font-size: medium;background-color: lightyellow" class="pull-right col-md-3 form-control" placeholder="Search" id="filterBox" onkeyup="FilterTable()" />
+            </div>
+        </div>
+
+
+        @*<div class='table-cont' id='table-cont'>*@
+        <div class="col-md-12 scrollbar table-cont" id="table-cont">
+            <table class="table table-hover table-bordered" id="data">
+                <thead>
+                    <tr id="Hedding">
+                        <th>
+                            @Html.DisplayName("Department Name")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Location")
+                        </th>
+                        @*<th>
+                                @Html.DisplayName("Contact Person")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Contact No")
+                            </th>*@
+                        <th>
+                            @Html.DisplayName("Status")
+                        </th>
+                        <th></th>
+
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.department_name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.address)
+                            </td>
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.contact_person)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.contact_no)
+                                </td>*@
+                            <td>
+                                @if (item.is_active == 1)
+                                {
+                                    @Html.Label("Activated")
+                                }
+                                else
+                                {
+                                    @Html.Label("Deactivated")
+                                }
+                            </td>
+                            <td>
+                                @if (item.is_active == 1)
+                                {
+                                    <button class="btn btn-color btn_de">
+                                        @Html.ActionLink("Deactivate", "Deactivate", new { id = item.department_id })
+                                    </button>
+
+                                }
+                                else
+                                {
+                                    <button class="btn btn-danger btn_custom">
+                                        @Html.ActionLink("Activate", "Activate", new { id = item.department_id })
+                                    </button>
+                                }
+
+                            </td>
+
+                            <td>
+                                <button class="btn btn-color">
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.department_id })
+                                </button>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    @* </div> *@
+</div>
+
+@section scripts{
+    <script src="~/Scripts/sqms/department.js"></script>
+    <script src="~/Scripts/sqms/fixed-table.js"></script>
+    @{
+        if (TempData["message"] != null)
+        {
+            <script type="text/javascript">
+            var message = @((TempData["message"] != null).ToString().ToLower());
+
+            if (message == true)
+                toastr["success"]("Save Successfull.");
+            else
+                toastr["error"]("Save Fail.");
+            </script>
+        }
+
+        if (TempData["mgs"] != null)
+        {
+            <script type="text/javascript">
+            var message = @((TempData["mgs"] != null).ToString().ToLower());
+
+            if (message == true)
+                toastr["success"]("Update Successfull.");
+            else
+                toastr["error"]("Update Fail.");
+            </script>
+        }
+    }
+
+}
+

@@ -1,0 +1,103 @@
+﻿@model IEnumerable<qms.ViewModels.VMPlayListSheduling>
+@{
+    ViewBag.Title = "Play List Scheduling List";
+}
+
+<br />
+
+<div class="container">
+    <div class="row">
+        <h4 class="page-head-line">Play List Scheduling > List </h4>
+
+
+        <a href='@Url.Action("Create", "PlayListSheduling")' style="margin-bottom : 10px;">
+            <button class="btn btn-color" style="margin-bottom : 10px;">Create New Play List Scheduling</button>
+        </a>
+            <div class="col-md-12 scrollbar table-cont" id="table-cont" style="overflow-x: hidden; overflow-y: scroll; max-height: 400px; height: auto">
+                <table class="table table-hover table-bordered" id="data">
+                    <thead>
+                        <tr id="Hedding">
+                            <th>
+                                PlayList Name
+                                @*@Html.DisplayNameFor(model => model.PlayList_name)*@
+                            </th>
+                            <th>
+                                When Start
+                                @*@Html.DisplayNameFor(model => model.when_start)*@
+                            </th>
+                            <th>
+                                Duration
+                                @*@Html.DisplayNameFor(model => model.duration)*@
+                            </th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PlayList_name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.when_start)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.duration)
+                                </td>
+                                <td>
+                                    <button class="btn btn-color">
+                                        @Html.ActionLink("Edit", "Edit", new { id = item.PlayList_Sheduling_id })
+                                    </button>
+                                </td>
+                                <td>
+                                    <button class="btn btn-color">
+                                        @Html.ActionLink("Delete", "Delete", new { id = item.PlayList_Sheduling_id })
+                                    </button>
+                                </td>
+                                <td>
+                                    @if (item.is_active == 0)
+                                    {
+                                        <button class="btn btn-color">
+                                            @Html.ActionLink("Approved", "Approved", new { id = item.PlayList_Sheduling_id })
+                                        </button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/sqms/fixed-table.js"></script>
+    @{
+        if (TempData["message"] != null)
+        {
+            <script type="text/javascript">
+            var message = @((TempData["message"] != null).ToString().ToLower());
+
+            if (message == true)
+                toastr["success"]("Save Successfull.");
+            else
+                toastr["error"]("Save Fail.");
+            </script>
+        }
+
+        if (TempData["mgs"] != null)
+        {
+            <script type="text/javascript">
+            var message = @((TempData["mgs"] != null).ToString().ToLower());
+
+            if (message == true)
+                toastr["success"]("Update Successfull.");
+            else
+                toastr["error"]("Update Fail.");
+            </script>
+        }
+    }
+}

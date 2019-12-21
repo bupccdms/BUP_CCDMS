@@ -1,0 +1,91 @@
+﻿@model qms.ViewModels.VMDevice
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+@{
+    ViewBag.Title = "Device Info Edit";
+}
+<div class="container">
+    <div class="row">
+        <h4 class="page-head-line">Device > Edit</h4>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.device_id)
+            @*@Html.HiddenFor(model => model.department_id)*@
+            @Html.HiddenFor(model => model.is_active)
+            @Html.HiddenFor(model => model.user_id)
+            <div class="form-group">
+                @Html.Label("User Name", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+           
+            <div class="form-group">
+                @if (User.IsInRole("Admin"))
+                {
+                    @Html.Label("Department Name", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-4">
+                        @Html.DropDownList("department_id", null, "Select Department Name", htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.department_id, "", new { @class = "text-danger" })
+                    </div>
+                }
+                else
+                {
+                    @Html.Label("Department Name", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-4">
+                        @Html.DropDownList("department_id", null, "Select Department Name", htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.department_id, "", new { @class = "text-danger" })
+                    </div>
+                }
+
+
+            </div>
+
+            <div class="form-group">
+                @*@Html.LabelFor(model => model.device_no, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                @Html.Label("Device No", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.device_no, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.device_no, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @*@Html.LabelFor(model => model.device_no, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                @Html.Label("Device Name", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.device_name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.device_name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @*@Html.LabelFor(model => model.location, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                @Html.Label("Location", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.location, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.location, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-4">
+                    <input type="submit" value="Update" class="btn btn-color" />
+                    <button class="btn btn-color">
+                        @Html.ActionLink("Back to List", "Index")
+                    </button>
+                </div>
+            </div>
+        </div>
+        }
+
+
+    </div>
+</div>

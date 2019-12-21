@@ -1,0 +1,268 @@
+﻿@using qms.Utility;
+@*@model IEnumerable<qms.Models.tblDepartmentUser>*@
+@model IEnumerable<qms.ViewModels.VMDepartmentLogin>
+@{
+    ViewBag.Title = "Security User";
+    SessionManager sm = new SessionManager(Session);
+    string message = ViewBag.message;
+}
+
+<div class="container">
+    <div class="row">
+        <h4 class="page-head-line">Department User > List </h4>
+        <a href='@Url.Action("Register", "Account")' class="btn btn-color" style="margin-bottom : 10px;">
+            Create Department User
+        </a>
+        @if (User.IsInRole("Admin"))
+        {
+            <a href='@Url.Action("AdminRegister", "Account")' class="btn btn-color" style="margin-bottom : 10px;">
+                Create Super Admin User
+            </a>
+        }
+
+
+        <div class="form-group">
+            @Html.Label("Department:", new { @class = "col-md-1 control-label" })
+            <div class="col-md-3" style="margin-bottom : 10px;">
+
+                <select name="department_name" class="form-control" id="department_name">
+                    <option value="">All Department</option>
+                    @foreach (var item in ViewBag.departmentList)
+                    {
+                        if (item.department_id == ViewBag.userDepartmentId)
+                        {
+                            <option value="@item.department_id" selected="selected">@item.department_name</option>
+                        }
+                        else
+                        {
+                            <option value="@item.department_id">@item.department_name</option>
+                        }
+
+                    }
+                </select>
+
+            </div>
+            @Html.Label("Role:", new { @class = "col-md-1 control-label" })
+            <div class="col-md-3" style="margin-bottom : 10px;">
+
+                <select name="role_name" class="form-control" id="role_name">
+                    <option value="">All Role</option>
+                    @foreach (var item in ViewBag.roleList)
+                    {
+
+
+                        <option value="@item.Id">@item.Name</option>
+
+
+                    }
+                </select>
+
+            </div>
+            <div class="col-md-4"></div>
+            <div class="col-md-3">
+                <input type="text" style="font-size: medium;background-color: lightyellow" class="pull-right col-md-3 form-control" placeholder="Search" id="filterBox" onkeyup="SearchFilterTable()" />
+            </div>
+        </div>
+
+        <div class="col-md-12 scrollbar table-cont" id="table-cont">
+            <table class="table table-hover table-bordered" id="data">
+                <thead>
+                    <tr id="Hedding">
+                        <th></th>
+                        <th>
+                            Department
+                        </th>
+                        <th>
+                            User Name
+                        </th>
+                        <th style="width: 110px;">
+                            Full Name
+                        </th>
+                        <th>
+                            Mobile
+                        </th>
+                        <th>
+                            Email
+                        </th>
+                        <th>
+                            Role
+                        </th>
+                        @if (ApplicationSetting.AllowActiveDirectoryUser)
+                        {
+                            <th>
+
+                            </th>
+                        }
+                        <th></th>
+                        <th>
+                            Status
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.ActionLink("Edit", "EditUser", "Account", new { userId = Cryptography.Encrypt(item.user_id, true) }, new { @class = "btn btn-color" })
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.department_name)
+                                @if (item.Name == "Department Admin" && User.IsInRole("Admin"))
+                                {
+                                    @Html.ActionLink("Add Department", "Create", "DepartmentUsers", new { userId = Cryptography.Encrypt(item.user_id, true) }, new { @class = "btn btn-color" })
+                                }
+
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Hometown)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PhoneNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @if (item.Name == "Admin")
+                                {
+                                    @Html.DisplayName("Super Admin")
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                }
+
+                            </td>
+                            @if (ApplicationSetting.AllowActiveDirectoryUser)
+                            {
+                                <td>
+
+                                    @if (item.Hometown != sm.user_name)
+                                    {
+                                        if (item.is_active_directory_user == 0)
+                                        {
+                                            @Html.Label("External")
+                                            @Html.ActionLink("Set Internal", "SetDirectoryUser", "Account", new { userId = Cryptography.Encrypt(item.user_id, true), is_active_directory_user = 1 }, new { @class = "btn btn-color" })
+                                        }
+                                        else
+                                        {
+                                            @Html.Label("Internal")
+                                            @Html.ActionLink("Set External", "SetDirectoryUser", "Account", new { userId = Cryptography.Encrypt(item.user_id, true), is_active_directory_user = 0 }, new { @class = "btn btn-color" })
+                                        }
+                                    }
+
+                                </td>
+                            }
+                            <td>
+                                @if (item.is_active_directory_user == 0)
+                                {
+                                    if (item.Hometown != sm.user_name)
+                                    {
+                                        @Html.ActionLink("Reset Password", "ResetPassword", "Account", new { userId = Cryptography.Encrypt(item.user_id, true) }, new { @class = "btn btn-color" })
+                                    }
+                                }
+                            </td>
+                            <td>
+                                @if (item.is_active == 1)
+                                {
+                                    @Html.Label("Activated")
+                                }
+                                else
+                                {
+                                    @Html.Label("Deactivated")
+                                }
+                            </td>
+                            <td>
+                                @if (item.Hometown != sm.user_name)
+                                {
+                                    if (item.is_active == 1)
+                                    {
+                                        <button class="btn btn-color btn_de" onclick="SetActivationStatus('@item.user_id',0)">Deactivate</button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-danger btn_custom" onclick="SetActivationStatus('@item.user_id',1)">Activate</button>
+                                    }
+                                }
+
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/sqms/department-user.js"></script>
+    <script src="~/Scripts/sqms/fixed-table.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            inp = $("#department_name option:selected").text();
+            if (inp == "All Department") {
+                $("#department_name").attr('disabled', false);
+            }
+            else $("#department_name").attr('disabled', true);
+
+            FilterTable2();
+            $("#department_name").change(function () {
+                // var selectedDepartment = $("#department_name option:selected").text();
+                FilterTable2();
+
+            });
+        });
+
+        function FilterTable2() {
+            index = -1;
+            inp = $("#department_name option:selected").text();
+            if (inp == "All Department") {
+                inp = "";
+            }
+            $("#data:visible tr:not(:has(>th))").each(function () {
+                if (~$(this).text().toLowerCase().indexOf(inp.toLowerCase())) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+            $('#Hedding').show();
+        };
+
+    </script>
+    @{
+        if (TempData["message"] != null)
+        {
+            <script type="text/javascript">
+            var message = @((TempData["message"] != null).ToString().ToLower());
+
+            if (message == true)
+                toastr["success"]("Save Successfull.");
+            else
+                toastr["error"]("Save Fail.");
+            </script>
+        }
+
+
+        if (TempData["mgs"] != null)
+        {
+            <script type="text/javascript">
+        var message = @((TempData["mgs"] != null).ToString().ToLower());
+
+        if (message == true)
+            toastr["success"]("Update Successfull.");
+        else
+            toastr["error"]("Update Fail.");
+            </script>
+        }
+    }
+}
+
+

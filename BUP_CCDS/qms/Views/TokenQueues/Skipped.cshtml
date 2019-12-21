@@ -1,0 +1,119 @@
+﻿@using Microsoft.AspNet.Identity
+@using qms.Utility
+@model IEnumerable<qms.ViewModels.VMTokenSkipped>
+@{
+    Layout = null;
+}
+
+    
+
+<div class="container" style="width:900px">
+    <div class="row">
+        <div class="form-group">
+            @Html.Label("Department:", new { @class = "col-md-1 control-label" })
+            <div class="col-md-3" style="margin-bottom :10px;">
+
+                <select name="department_name" class="form-control" id="department_name">
+                    <option value="">All Department</option>
+                    @foreach (var item in ViewBag.departmentList)
+                    {
+                        if (item.department_id == ViewBag.userDepartmentId)
+                        {
+                            <option value="@item.department_id" selected="selected">@item.department_name</option>
+                        }
+                        else
+                        {
+                            <option value="@item.department_id">@item.department_name</option>
+                        }
+
+                    }
+
+                </select>
+
+            </div>
+
+            <div class="col-md-5"></div>
+            <div class="col-md-3">
+                <input type="text" style="font-size: medium;background-color: lightyellow" class="pull-right col-md-3 form-control" placeholder="Search" id="filterBox" onkeyup="FilterTable()" />
+            </div>
+        </div>
+        <div class="col-md-12 scrollbar table-scroll" style="margin-bottom : 20px;">
+
+            <table class="table table-hover table-bordered table-responsive" id="data-skipped">
+                <tr id="Hedding" style="text-align: center">
+                    <th>
+                        @Html.DisplayName("Department Name")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Device No")
+                    </th>
+                    <th>
+                        @Html.DisplayName("User Name")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Token No")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Contact No")
+                    </th>
+
+                    <th>
+                        @Html.DisplayName("Cancel Time")
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr id="@item.token_id">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.department_name)
+                        </td>
+                        <td id="token" style="text-align : center;">
+
+                            @Html.DisplayFor(modelItem => item.device_no)
+                        </td>
+                        <td>
+
+                            @Html.DisplayFor(modelItem => item.user_full_name)
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.token_no_formated)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.contact_no)
+                        </td>
+
+                        <td>
+
+                            @Html.DisplayFor(modelItem => item.cancel_time)
+                        </td>
+                        <td>
+
+                            <button type="submit" onclick="TokenReInitiate(@item.token_id)" value="Re-Initiate" class="btn  btn-color marzin-bottom" id="reinitiate_btn">Re-Initiate</button>
+                            <button type="submit" onclick="TokenAssignToMe(@item.token_id)" class="btn  btn-color marzin-bottom" id="reinitiate_btn">Asign to Me</button>
+
+
+                        </td>
+
+                    </tr>
+
+
+                }
+
+
+
+            </table>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+<script>
+
+    SelectDepartment();
+</script>

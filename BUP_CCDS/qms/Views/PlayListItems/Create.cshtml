@@ -1,0 +1,268 @@
+﻿@model qms.Models.tblPlayListItem
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+@{
+    ViewBag.Title = "Play List Create";
+
+    <style>
+        #volume {
+            width: 250px;
+            /*height: 30px;*/
+            height: 7px;
+            position: absolute;
+            cursor: pointer;
+            background: #444;
+            top: 50%;
+            left: 50%;
+            margin-left: -125px;
+            margin-top: -15px;
+            box-shadow: inset 0 0 15px #000;
+        }
+
+            #volume .vol-box {
+                font-size: 14px;
+                display: block;
+                text-align: center;
+                margin-top: 5px;
+                /*margin-top: 50px;*/
+            }
+
+            #volume .control {
+                position: absolute;
+                top: 0;
+                left: 0;
+                /*width: 125px;*/
+                /*height: 30px;*/
+                height: 7px;
+                background: #3498db;
+                box-shadow: inset 0 0 2px #000;
+            }
+
+            #volume .control .knob {
+                position: absolute;
+                top: -4px;
+                right: -5px;
+                /* height: 30px; */
+                height: 15px;
+                width: 15px;
+                background: #FFF;
+                box-shadow: 0 0 1px #000;
+                border-radius: 50%;
+            }
+    </style>
+}
+<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+<div class="container">
+    <div class="row">
+        <h4 class="page-head-line">Play List > @Model.playlist_name> Item > Create</h4>
+
+        <div class="col-md-7">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(m => m.item_url)
+                @Html.HiddenFor(m => m.file_type)
+                <div class="form-group">
+                    <div class="col-md-3">
+                        Playlist Name
+                    </div>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.playlist_name, new { htmlAttributes = new { @class = "form-control Next disabled", @disabled = "disabled", @placeholder = "Playlist Name" } })
+                        @Html.ValidationMessageFor(model => model.playlist_name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-3">
+                        File Name
+                    </div>
+                    <div class="col-md-3">
+                        @Html.EditorFor(model => model.file_name, new { htmlAttributes = new { @class = "form-control Next", @readonly = "readonly", @placeholder = "File Name" } })
+                        @Html.ValidationMessageFor(model => model.file_name, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-color" onclick="return loadGalleryDialog('@Model.item_url',$('#file_name').val());">
+                            Media Browse
+                        </button>
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-color" onclick="return loadContentDialog('@Model.item_url',$('#file_name').val());">
+                            Content Browse
+                        </button>
+                    </div>
+                    <p id="demo"></p>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-3">
+                        Start Time
+                    </div>
+                    <div class="col-md-9">
+                        <div class="col-md-2">
+                            <label>Munites</label>
+                            @Html.EditorFor(model => model.startTimeInMinutes, new { htmlAttributes = new { @class = "form-control Next", @placeholder = "Start Time" } })
+                            @Html.ValidationMessageFor(model => model.startTimeInMinutes, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-2">
+                            <label>Seconds</label>
+                            @Html.EditorFor(model => model.startTimeInSeconds, new { htmlAttributes = new { @class = "form-control Next", @placeholder = "Second" } })
+                            @Html.ValidationMessageFor(model => model.startTimeInSeconds, "", new { @class = "text-danger" })
+                        </div>
+                        <input type="hidden" name="start_time" id="hidStartTime" value="" />
+                        @*@Html.EditorFor(model => model.start_time, new { htmlAttributes = new { @class = "form-control Next", @placeholder = "Second" } })
+                @Html.ValidationMessageFor(model => model.start_time, "", new { @class = "text-danger" })*@
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        End Time
+                    </div>
+                    <div class="col-md-9">
+                        <div class="col-md-2">
+                            @Html.EditorFor(model => model.endTimeInMunites, new { htmlAttributes = new { @class = "form-control Next", @placeholder = "End Time", @type = "number" } })
+                            @Html.ValidationMessageFor(model => model.endTimeInMunites, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-2">
+                            @Html.EditorFor(model => model.endTimeInSeconds, new { htmlAttributes = new { @class = "form-control Next", @placeholder = "End Time", @type = "number" } })
+                            @Html.ValidationMessageFor(model => model.endTimeInSeconds, "", new { @class = "text-danger" })
+                        </div>
+                        <input type="hidden" name="end_time" id="hidEndTime" value="" />
+                        @*@Html.EditorFor(model => model.end_time, new { htmlAttributes = new { @class = "form-control Next", @placeholder = "End Time" } })
+                @Html.ValidationMessageFor(model => model.end_time, "", new { @class = "text-danger" })*@
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-3">
+                        Duration In Second
+                    </div>
+                    <div class="col-md-9">
+                        <div class="col-md-2">
+                            @Html.EditorFor(model => model.durationInMunites, new { htmlAttributes = new { @class = "form-control Next", @placeholder = "End Time" } })
+                            @Html.ValidationMessageFor(model => model.durationInMunites, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-2">
+                            @Html.EditorFor(model => model.durationInSecond, new { htmlAttributes = new { @class = "form-control Next", @placeholder = "End Time" } })
+                            @Html.ValidationMessageFor(model => model.durationInSecond, "", new { @class = "text-danger" })
+                        </div>
+                        <input type="hidden" name="duration_in_second" id="hidDuration" value="" />
+                        @*@Html.EditorFor(model => model.duration_in_second, new { htmlAttributes = new { @class = "form-control Next", @placeholder = "End Time" } })
+                @Html.ValidationMessageFor(model => model.duration_in_second, "", new { @class = "text-danger" })*@
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        Sort Order
+                    </div>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.sort_order, new { htmlAttributes = new { @class = "form-control Next", @placeholder = "Sort Order", Value = ViewBag.SortOrder } })
+                        @Html.ValidationMessageFor(model => model.sort_order, "", new { @class = "text-danger" })
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.CheckBoxFor(model => model.bool_show_in_mobile, new { htmlAttributes = new { @class = "form-control" } }) Is show in mobile?
+                        @Html.ValidationMessageFor(model => model.bool_show_in_mobile, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.CheckBoxFor(model => model.bool_is_in_mute,  new {onclick = "checkval();" }) Is Mute?
+                        @Html.ValidationMessageFor(model => model.bool_is_in_mute, "", new { @class = "text-danger" })
+                    </div>
+                    <div id="volumecircle" class="col-md-6" style="margin-top:25px;">
+                        <div id="volume">
+                            <div class="control">
+                                <span class="knob"></span>
+                            </div>
+                            <span class="vol-box" id="volumeValue">0</span>
+                            <input type="hidden" name="volume" id="hidVolume" value="" />
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <div class="col-md-8">
+                        <input type="submit" value="Create" class="btn btn-color" />
+                        <button class="btn btn-color">
+                            @Html.ActionLink("Back to List", "Index", new { playlist_id = Model.playlist_id })
+                        </button>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+
+        <div id="dialog-url-gallery" title="Gallery">
+        </div>
+        <div id="dialog-url-content" title="Content">
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/modal/modal.js"></script>
+    <script src="~/Scripts/sqms/play-list.js"></script>
+
+    <script>
+        //based on: http://jsfiddle.net/TGd96/
+
+var volume = { 
+
+    init: function(){
+        $('#volume').on('click', volume.change);
+        $('#volume .control').on('mousedown', volume.drag);
+    },
+      
+    change: function(e){
+        e.preventDefault();
+        var percent = helper.getFrac(e, $(this)) * 100;
+        $('#volume .control').animate({ width: percent+'%' }, 100);
+        volume.update(percent);
+    },
+  
+    update: function(percent){
+        $('.vol-box').text(Math.round(percent));
+        var hidVolume = document.getElementById('hidVolume');
+        hidVolume.value = Math.round(percent);
+      //console.log(percent);
+    },
+
+    drag: function(e){
+        e.preventDefault();
+        $(document).on('mousemove', volume.moveHandler);
+        $(document).on('mouseup', volume.stopHandler);
+    },
+
+    moveHandler: function(e){
+        var holderOffset = $('#volume').offset().left,
+            sliderWidth = $('#volume').width(),
+            posX = Math.min(Math.max(0, e.pageX - holderOffset), sliderWidth);
+
+        $('#volume .control').width(posX);
+        volume.update(posX / sliderWidth * 100);
+    },
+
+    stopHandler: function(){
+        $(document).off('mousemove', volume.moveHandler);
+        $(document).off('mouseup', volume.stopHandler);
+    }
+  
+}
+
+var helper = {
+    getFrac: function(e, $this){
+        return ( e.pageX - $this.offset().left ) / $this.width();
+    }
+}
+
+volume.init();
+    </script>
+}

@@ -1,0 +1,51 @@
+﻿@model qms.ViewModels.VMDeviceScroll
+
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+@{
+    ViewBag.Title = "Device Scroll Delete";
+}
+
+<div class="container">
+    <div class="row">
+        <h4 class="page-head-line">Device Scroll > Delete</h4>
+        <h3>Are you sure you want to delete this?</h3>
+        <div>
+
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayName("Device")
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.device_name)
+                </dd>
+
+               
+
+                <dt>
+                    @Html.DisplayName("Content")
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.content_bn)
+                </dd>
+
+            </dl>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-color" /> |
+                <a href='@Url.Action("Index")'>
+                    <button class="btn btn-color">Back to List</button>
+                </a>
+            </div>
+            }
+        </div>
+        <br />
+    </div>
+</div>

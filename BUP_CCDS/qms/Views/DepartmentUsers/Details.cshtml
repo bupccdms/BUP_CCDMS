@@ -1,0 +1,40 @@
+﻿@model qms.Models.tblDepartmentUser
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" />
+    <title>Details</title>
+</head>
+<body>
+    <h4>Department User > Detail</h4>
+    <div>
+        <h4>DepartmentUser</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayName("User ID")
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.user_id)
+            </dd>
+    
+            <dt>
+                @Html.DisplayName("Department No")
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.department_id)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.user_department_id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>

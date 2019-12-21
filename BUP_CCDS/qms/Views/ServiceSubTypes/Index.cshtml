@@ -1,0 +1,74 @@
+﻿@*@model IEnumerable<qms.Models.tblServiceSubType>*@
+@model IEnumerable<qms.ViewModels.VMServiceType>
+
+@{
+    ViewBag.Title = "Service List";
+}
+<div class="container">
+    <div class="row">
+        <h4 class="page-head-line">Service Sub Type > List</h4>
+
+
+        <a href='@Url.Action("Create", "ServiceSubTypes")' style="margin-bottom : 10px;">
+            <button class="btn btn-color" style="margin-bottom : 10px;">Create New Service</button>
+        </a>
+        <div class="col-md-12 scrollbar table-scroll">
+
+            <table class="table table-hover table-bordered" id="data">
+                <tr id="Hedding">
+                    <th>
+                        Type Name
+                    </th>
+                    <th>
+                        Service Name
+                    </th>
+                    <th>
+                        Duration(Minutes)
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.service_type_name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.service_sub_type_name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.max_duration)
+                        </td>
+                        <td>
+                            <button class="btn btn-color">
+                                @Html.ActionLink("Edit", "Edit", new { id = item.service_sub_type_id })
+                            </button>
+                        </td>
+                        <td>
+                            
+                            
+                                @if (item.is_active == 0)
+                                {
+                                    @Html.Label("Deactivated")<br/>
+                                    <button class="btn btn-color" onclick="SetStatus('@item.service_sub_type_id',1)">Activate</button>
+                                }
+                                else
+                                {
+                                    @Html.Label("Activated")<br />
+                                    <button class="btn btn-color" onclick="SetStatus('@item.service_sub_type_id',0)">Deactivate</button>
+                                }
+                            
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/sqms/service-sub-type.js"></script>
+}

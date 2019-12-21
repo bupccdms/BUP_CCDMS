@@ -1,0 +1,177 @@
+﻿@using qms.Utility;
+@model IEnumerable<qms.ViewModels.VMDevice>
+@{
+    ViewBag.Title = "Device List";
+    SessionManager sm = new SessionManager(Session);
+}
+<div class="container">
+    <div class="row">
+        <h4 class="page-head-line">Device > List</h4>
+
+        <a href='@Url.Action("Create", "Devices")' style="margin-bottom : 10px;">
+            <button class="btn btn-color" style="margin-bottom : 10px;">Create New Device</button>
+        </a>
+        <div class="form-group">
+            @Html.Label("Department:", new { @class = "col-md-1 control-label" })
+            <div class="col-md-3" style="margin-bottom : 10px;">
+
+                <select name="department_name" class="form-control" id="department_name">
+                    <option value="">All Department</option>
+                    @foreach (var item in ViewBag.departmentList)
+                    {
+                        if (item.department_id == ViewBag.userDepartmentId)
+                        {
+                            <option value="@item.department_id" selected="selected">@item.department_name</option>
+                        }
+                        else
+                        {
+                            <option value="@item.department_id">@item.department_name</option>
+                        }
+
+                    }
+                </select>
+
+            </div>
+            <div class="col-md-8">
+                @if (!User.IsInRole("Admin"))
+                {
+                    <div class="col-md-3">
+                        <p style="font-weight:bold">Total Device : @ViewBag.TotalDevice</p>
+
+                    </div>
+                    <div class="col-md-3">
+                        <p style="font-weight:bold">Total Active : @ViewBag.TotalActiveDevice</p>
+
+                    </div>
+                }
+                <div class="col-md-4">
+                    <input type="text" style="font-size: medium;background-color: lightyellow" class="pull-right col-md-3 form-control" placeholder="Search" id="filterBox" onkeyup="FilterTable()" />
+                </div>
+            </div>
+            <div class="col-md-12 scrollbar table-cont" id="table-cont">
+                <table class="table table-hover table-bordered" id="data">
+                    <thead>
+                        <tr id="Hedding">
+                            <th>
+                                @Html.DisplayName("Device Name")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Device No")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Location")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Department Name")
+                            </th>
+
+                            <th>@Html.DisplayName("User Name")</th>
+                            <th></th>
+                            <th>
+                                @Html.DisplayName("Device Status")
+                            </th>
+
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.device_name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.device_no)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.location)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.department_name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserName)
+                                </td>
+                                <td>
+                                    @if (item.is_active_directory_user == 0)
+                                    {
+                                        if (item.hometown != sm.user_name)
+                                        {
+                                            @Html.ActionLink("Reset Password", "ResetPassword", "Account", new { userId = Cryptography.Encrypt(item.user_id, true) }, new { @class = "btn btn-color" })
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.is_active == 1)
+                                    {
+                                        @Html.Label("Activated")
+                                    }
+                                    else
+                                    {
+                                        @Html.Label("Deactivated")
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.is_active == 1)
+                                    {
+                                        <button class="btn btn-color btn_de">
+                                            @Html.ActionLink("Deactivate", "Deactivate", new { id = item.device_id })
+                                        </button>
+
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-danger btn_custom">
+                                            @Html.ActionLink("Activate", "Activate", new { id = item.device_id })
+                                        </button>
+                                    }
+
+                                </td>
+
+                                <td>
+                                    <button class="btn btn-color">
+                                        @Html.ActionLink("Edit", "Edit", new { id = item.device_id })
+                                    </button>
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+    @section scripts{
+        <script src="~/Scripts/sqms/device.js"></script>
+        <script src="~/Scripts/sqms/fixed-table.js"></script>
+        @{
+            if (TempData["message"] != null)
+            {
+                <script type="text/javascript">
+            var message = @((TempData["message"] != null).ToString().ToLower());
+
+            if (message == true)
+                toastr["success"]("Save Successfull.");
+            else
+                toastr["error"]("Save Fail.");
+                </script>
+            }
+
+            if (TempData["mgs"] != null)
+            {
+                <script type="text/javascript">
+            var message = @((TempData["mgs"] != null).ToString().ToLower());
+
+            if (message == true)
+                toastr["success"]("Update Successfull.");
+            else
+                toastr["error"]("Update Fail.");
+                </script>
+            }
+        }
+    }
+

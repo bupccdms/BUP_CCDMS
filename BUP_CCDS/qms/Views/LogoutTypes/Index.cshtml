@@ -1,0 +1,76 @@
+﻿@model IEnumerable<qms.Models.tblLogoutType>
+@{
+    ViewBag.Title = "Logout Type List";
+}
+
+<br />
+
+<div class="container">
+    <div class="row">
+        <h4 class="page-head-line">Logout > List </h4>
+
+
+        <a href='@Url.Action("Create", "LogoutTypes")' style="margin-bottom : 10px;">
+            <button class="btn btn-color" style="margin-bottom : 10px;">Create New Logout Type</button>
+        </a>
+
+        <div class="col-md-12 scrollbar" style="overflow-x: hidden; overflow-y: scroll; max-height: 400px; height: auto">
+
+            <table class="table table-hover table-bordered" id="data">
+                <tr id="Hedding">
+                    <th>
+                        @Html.DisplayNameFor(model => model.logout_type_name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.has_free_text)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.is_active)
+                    </th>
+                    
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.logout_type_name)
+                        </td>
+                        <td>
+                            @if (item.has_free_text == 1)
+                            {
+                                @Html.Label("Yes")
+                            }
+                            else
+                            {
+                                @Html.Label("No")
+                            }
+                        </td>
+                        <td>
+                            @if (item.is_active == 1)
+                            {
+                                @Html.Label("Activated")
+                            }
+                            else
+                            {
+                                @Html.Label("Deactivated")
+                            }
+                        </td>
+                        
+                        <td>
+                            <button class="btn btn-color">
+                                @Html.ActionLink("Edit", "Edit", new { id = item.logout_type_id })
+                            </button>
+                            <button class="btn btn-color">
+                                @Html.ActionLink("Delete", "Delete", new { id = item.logout_type_id })
+                            </button>
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,146 @@
+﻿@using Microsoft.AspNet.Identity
+@using qms.Utility;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - CCDS Mamangement</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+    <link href="~/Content/jquery.fancybox-plus.css" rel="stylesheet" />
+    <link href="~/assets/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/assets/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/assets/css/style.css" rel="stylesheet" />
+    
+    <link href="~/Content/jquery-ui.css" rel="stylesheet" />
+    <link href="~/Content/jquery.timepicker.min.css" rel="stylesheet" />
+    <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @*@Styles.Render("~/Content/css")*@
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="~/Scripts/jquery.min.js"></script>
+    <script src="~/Scripts/Chart.bundle.min.js"></script>
+    <script src="~/Scripts/Chart.js"></script>
+    <script src="~/Scripts/jquery.timepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    @*<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>*@
+</head>
+<body>
+    <!-- HEADER END-->
+    <div class="banner">
+        <a href='@Url.Action("AdminDashboard", "Home")'>
+            <img src="~/img/bup header-07.jpg" alt="Alternate Text" />
+        </a>
+
+    </div>
+    @if (Request.IsAuthenticated)
+    {
+        SessionManager sm = new SessionManager(Session);
+        if (!string.IsNullOrEmpty(sm.user_id))
+        {
+            <section class="user-profile-section">
+                <div class="row">
+                    <div class="col-md-8 user-info">
+                        Welcome!&nbsp;@sm.user_name,&nbsp;@(sm.department_id > 0 ? HttpUtility.HtmlDecode("at " + sm.department_name) : "")@(sm.device_id > 0 ? HttpUtility.HtmlDecode(":- Device# " + sm.device_no) : "")&nbsp;as&nbsp;@(User.IsInRole("Admin") ? "Super Admin" : (User.IsInRole("Department Admin") ? "Department Admin" : (User.IsInRole("Token Generator") ? "Token Generator" : (User.IsInRole("Service Holder") ? "Service Holder" : ""))))
+                    </div>
+                    <div class="col-md-3">
+                        @Html.Partial("_LoginPartial")
+                    </div>
+                    <div class="col-md-1">
+                       
+                    </div>
+                </div>
+
+            </section>
+        }
+    }
+    <!-- LOGO HEADER END-->
+   
+    <div class="main-seation">
+        <div class="container-fluid">
+            <div class="row">
+                @if (Request.IsAuthenticated)
+                {
+                    <div class="col-md-2">
+                        <div class="sidebar">
+                            @Html.Partial("_Menu")
+                        </div>
+                    </div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-10">
+                        @RenderBody()
+                        @RenderSection("SPAViews", required: false)
+                        <div id="dialog-message" title="Information">
+                            <div id="body">
+
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-12">
+                        @RenderBody()
+                        @RenderSection("SPAViews", required: false)
+                        <div id="dialog-message" title="Information">
+                            <div id="body">
+
+                            </div>
+                        </div>
+                    </div>
+                }
+               
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <a href="http://www.subrasystems.com">
+                        Developed By: Subra Systems Ltd.
+
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </footer>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script src="~/Scripts/sqms/global.js"></script>
+    <script src="~/Scripts/modal/modal.js"></script>
+    <script src="~/Scripts/modal/jquery-ui.js"></script>
+    <script src="~/Scripts/sqms/min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script>
+        $(function () {
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+        });
+      
+    </script>
+    @RenderSection("Scripts", required: false)
+  
+</body>
+</html>

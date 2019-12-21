@@ -1,0 +1,75 @@
+﻿@using qms.Models
+@model DepartmentLoginModel
+@{
+    ViewBag.Title = "Department Log in";
+}
+
+
+@{
+    ViewBag.Title = "Log in";
+}
+<style type="text/css">
+    .bgimg {
+        background-image: url('../Content/queue.jpg');
+    }
+</style>
+
+<div class="">
+
+    <h2>Department User</h2>
+    <div class="row bgimg">
+        <div class=" col-lg-offset-4">
+            <section id="loginForm">
+                @using (Html.BeginForm("Index", "TokenQueues", new { ReturnUrl = ViewBag.BReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.department_name, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            <select name="department_name" class="form-control" id="department_name" required>
+                                <option value="">Select a Department</option>
+                                @foreach (var item in ViewBag.departmentList)
+                                {
+                                    if (item.department_id == ViewBag.userDepartmentId)
+                                    {
+                                        <option value="@item.department_id" selected="selected">@item.department_name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.department_id">@item.department_name</option>
+                                    }
+                                }
+                            </select>
+
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.device_no, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            <select name="device_no" class="form-control" required id="device_no"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="GO" class="btn btn-success" />
+                        </div>
+                    </div>
+                }
+            </section>
+        </div>
+
+
+
+    </div>
+</div>
+
+@section scripts {
+
+
+    <script src="~/Scripts/sqms/department-login.js"></script>
+
+}

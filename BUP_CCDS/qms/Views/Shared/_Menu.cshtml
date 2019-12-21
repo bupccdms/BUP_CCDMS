@@ -1,0 +1,32 @@
+﻿@using Microsoft.AspNet.Identity
+@using qms.Utility
+@if (Request.IsAuthenticated && new SessionManager(Session).user_id.Length > 0 )
+{
+    if (User.IsInRole("Admin"))
+    {
+        @Html.Partial("_MenuAdmin")
+    }
+    else if (User.IsInRole("Department Admin") && new SessionManager(Session).department_id>0)
+    {
+        @Html.Partial("_MenuDepartmentAdmin")
+    }
+    else if (User.IsInRole("Token Generator"))
+    {
+        @Html.Partial("_MenuTokenGenerator")
+    }
+    else if (User.IsInRole("Service Holder"))
+    {
+        @Html.Partial("_MenuServiceHolder")
+    }
+    else if (User.IsInRole("Display User"))
+    {
+        @Html.Partial("_MenuDisplayUser")
+    }
+
+}
+@*else
+{
+    @Html.Partial("_MenuDisplayUser")
+}*@
+
+

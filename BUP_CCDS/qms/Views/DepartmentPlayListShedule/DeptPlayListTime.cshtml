@@ -1,0 +1,43 @@
+﻿
+    <div class="row">
+
+        <h4 class="page-head-line">Set Department Play List Time </h4>
+
+        <div class="col-md-5">
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                @*@ViewBag.playlist_id*@
+                <input type="hidden" value=@ViewBag.department_playlist_id id='department_playlist_id'>
+                <input type="hidden" value=@ViewBag.department_id id='department_id'>
+                <input type="hidden" value=@ViewBag.playList_id id='playList_id'>
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <input type="checkbox" id="ContentCheckbox" value="Content" onclick="checkval($(this).val())" checked /> Dept. Playlist With Time
+                &nbsp;
+                <input type="checkbox" id="is_url" value="URL" onclick="checkval($(this).val())" /> Dept. Playlist Without Time
+                <div class="form-group">
+                    <div class="col-md-8">
+                        <input type="number" id="content" class="form-control" name="playlistTime" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <h4 id="url"></h4>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <input type="button" value="Save" class="btn btn-color" onclick="SaveDepartmentPlaylistTime()" />
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+
+<script>
+</script>

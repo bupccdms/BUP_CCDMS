@@ -1,0 +1,145 @@
+﻿@model IEnumerable<qms.ReportModels.RM_SingleVSMultipleVisitedCustomer>
+@{
+    ViewBag.Title = "SingleVSMultipleVisitSummaryReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .bottom-space {
+        margin-bottom: 5px;
+        text-align: left;
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <h4 class="page-head-line">Single vs Multiple Visit Summary</h4>
+        <div class="col-md-12">
+            <div class="panel-group" id="accordion" style="text-align:center">
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="height:38px">
+                        <h4 class="panel-title">
+                            
+                        </h4>
+                    </div>
+
+                    <div id="collapse1" class="panel-collapse collapse in">
+
+                        <div class="panel-body text-left">
+                            <div class="row bottom-space">
+
+                                <div class="col-md-2">
+                                    Select Department :
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.DropDownList("department_id", null, "All Departments", htmlAttributes: new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-2">
+                                    Select Service :
+                                </div>
+                                <div class="col-md-2">
+                                    <select name="service_sub_type_id" class="form-control" id="service_sub_type_id" required>
+                                        <option value="0">All Services</option>
+                                        @foreach (var item in ViewBag.serviceList)
+                                        {
+                                            <option value="@item.service_sub_type_id">@item.service_sub_type_name</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    Start Time :
+                                </div>
+                                <div class="col-md-2">
+                                    <div style="position: relative">
+                                        <input class="timepicker form-control" type="text" id="txtStartTime" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row bottom-space">
+
+                                <div class="col-md-2">
+                                    Select User :
+                                </div>
+                                <div class="col-md-2">
+                                    <select name="txtUser" class="form-control" required id="txtUser"></select>
+                                </div>
+                                <div class="col-md-2">
+                                    From Date :
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="date" class="form-control" value="@DateTime.Today.ToString("yyyy-MM-dd")" id="txtFromDate" />
+                                </div>
+                                <div class="col-md-2">
+                                    End Time :
+                                </div>
+                                <div class="col-md-2" style="position: relative">
+                                    <input class="timepicker form-control" type="text" id="txtEndTime" />
+                                </div>
+                            </div>
+                            <div class="row bottom-space">
+
+                                <div class="col-md-2">
+                                    Select Device :
+                                </div>
+                                <div class="col-md-2">
+                                    <select name="txtDevice" class="form-control" required id="txtDevice"></select>
+                                </div>
+                                <div class="col-md-2">
+                                    To Date :
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="date" class="form-control" value="@DateTime.Today.ToString("yyyy-MM-dd")" id="txtToDate" />
+                                </div>
+                                <div class="col-md-2">
+                                </div>
+                                <div class="col-md-2" style="position: relative">
+                                    <div class="col-md-12 btn-color" style="text-align:right; border-radius:5px">
+                                        <img src="~/img/csv_img.png" style="height:22px; cursor:pointer" alt="CSV" title="CSV" onclick="ExportSinglevsMultipleVisitSummaryReport('CSV')" />
+                                        <img src="~/img/doc_img.JPG" style="height:22px; cursor:pointer" alt="Word" title="Word" onclick="ExportSinglevsMultipleVisitSummaryReport('Word')" />
+                                        <img src="~/img/excel_img.jpg" style="height:21px; cursor:pointer" alt="Excel" title="Excel" onclick="ExportSinglevsMultipleVisitSummaryReport('Excel')" />
+                                        <img src="~/img/pdf_image.jpg" style="height:25px; cursor:pointer" alt="PDF" title="PDF" onclick="ExportSinglevsMultipleVisitSummaryReport('PDF')" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dialog-report" title="Information">
+</div>
+
+@section scripts{
+    <script src="~/Scripts/modal/modal.js"></script>
+    <script src="~/Scripts/modal/tab.js"></script>
+    <script src="~/Scripts/sqms/date.js"></script>
+    <script src="~/Scripts/sqms/report.js"></script>
+    <script src="~/Scripts/sqms/export.js"></script>
+}
+<script type="text/javascript">
+
+    $('#txtStartTime').timepicker({
+        timeFormat: 'h:mm p',
+        interval: 15,
+        minTime: '9',
+        maxTime: '11:59PM',
+        defaultTime: '9:00AM',
+        startTime: '9:00AM',
+        dynamic: false,
+        dropdown: true,
+        scrollbar: true
+    });
+
+    $('#txtEndTime').timepicker({
+        timeFormat: 'h:mm p',
+        interval: 15,
+        minTime: '9',
+        maxTime: '11:59PM',
+        defaultTime: '08:00PM',
+        startTime: '9:00AM',
+        dynamic: false,
+        dropdown: true,
+        scrollbar: true
+    });
+</script>

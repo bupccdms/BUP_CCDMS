@@ -1,0 +1,142 @@
+﻿@model IEnumerable<qms.ViewModels.VMDepartmentPlayList>
+@{
+    ViewBag.Title = "Playlist Information";
+}
+<div class="container">
+    <div class="row">
+        <h4 class="page-head-line">Department > Playlist </h4>
+        <div class="row">
+            <div class="col-md-3" style="margin-bottom : 10px;">
+                <a href='@Url.Action("Create", "DepartmentPlayList")'>
+                    <button class="btn btn-color" style="margin-bottom : 10px;">Map Department Playlist</button>
+                </a>
+
+            </div>
+            <div class="col-md-6"></div>
+            <div class="col-md-3">
+                <input type="text" style="font-size: medium;background-color: lightyellow" class="pull-right col-md-3 form-control" placeholder="Search" id="filterBox" onkeyup="FilterTable()" />
+            </div>
+        </div>
+
+
+
+        <div class="col-md-12 scrollbar table-cont" id="table-cont">
+            <table class="table table-hover table-bordered" id="data">
+                <thead>
+                    <tr id="Hedding">
+                        <th></th>
+                        <th></th>
+                        <th>
+                            @Html.DisplayName("Department Name")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Department Location")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Playlist")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Priority")
+                        </th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            <button class="btn btn-color" onclick="return loadDeptPlaylistTimeDialog('@item.department_playlist_id', '@item.department_id', '@item.playlist_id');">
+                                @*@Html.ActionLink("PUblish To All", "PublishToAll", new { id = item.department_id })*@
+                                Publish To All
+                            </button>
+                        </td>
+                        @if (item.is_publish == 1)
+                        {
+                            <td style="background-color:#007F3D; color:#FFFFFF; text-align:center;">
+                                @Html.Label("YES")
+                            </td>
+                        }
+                        else
+                        {
+                            <td style="background-color:#FF0000;color:#FFFFFF;text-align:center;">
+                                @Html.Label("NO")
+                            </td>
+                        }
+                        <td style="text-align:center">
+                            @Html.DisplayFor(modelItem => item.department_name)
+                        </td>
+                        <td style="text-align:center">
+                            @Html.DisplayFor(modelItem => item.address)
+                        </td>
+                        <td>
+                            <label class="cursor" onclick="return loadPlayListDialog('@item.playlist_id');">
+                                @Html.DisplayFor(modelItem => item.playlist_name)
+                            </label>
+                        </td>
+                        @if (item.is_priority == 1)
+                        {
+                            <td style="text-align:center;">
+                                @Html.Label("YES")
+                            </td>
+                        }
+                        else
+                        {
+                            <td style="text-align:center;">
+                                @Html.Label("NO")
+                            </td>
+                        }
+                        <td>
+                            <button class="btn btn-color">
+                                @Html.ActionLink("Edit", "Edit", new { id = item.department_playlist_id })
+                            </button>
+
+                        </td>
+                        <td>
+                            <button class="btn btn-color">
+                                @Html.ActionLink("Delete", "Delete", new { id = item.department_playlist_id })
+                            </button>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div id="dialog-playList-department" title="Play List Item department">
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/sqms/department.js"></script>
+    <script src="~/Scripts/modal/modal.js"></script>
+
+    <script src="~/Scripts/sqms/fixed-table.js"></script>
+    @{
+        if (TempData["message"] != null)
+        {
+            <script type="text/javascript">
+            var message = @((TempData["message"] != null).ToString().ToLower());
+
+            if (message == true)
+                toastr["success"]("Save Successfull.");
+            else
+                toastr["error"]("Save Fail.");
+            </script>
+        }
+
+        if (TempData["mgs"] != null)
+        {
+            <script type="text/javascript">
+            var message = @((TempData["mgs"] != null).ToString().ToLower());
+
+            if (message == true)
+                toastr["success"]("Update Successfull.");
+            else
+                toastr["error"]("Update Fail.");
+            </script>
+        }
+    }
+}
+

@@ -1,0 +1,169 @@
+﻿@model IEnumerable<qms.ViewModels.VMDashboardDeviceService>
+@using qms.ViewModels
+
+<div class="row">
+    
+    <div class="col-lg-12 col-md-12 scrollbar table-scroll">
+        <div class="panel panel-default">
+            <div class="panel-heading text-center">
+                <h4 class="panel-title">
+                    Device Summary
+                </h4>
+            </div>
+            <div class="panel-body">
+                <div class="col-lg-12 col-md-12 table-bordered">
+                    <div class="row">
+                        <div class="col-lg-2 col-md-2 tr-odd"><b>User&nbsp;Name</b></div>
+                        <div class="col-lg-4 col-md-4 tr-odd">@ViewBag.UserName</div>
+                        <div class="col-lg-2 col-md-2 tr-odd"><b>Device</b></div>
+                        <div class="col-lg-4 col-md-4 tr-odd">@ViewBag.DeviceNo</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2 col-md-2"><b>Total&nbsp;Pending</b></div>
+                        <div class="col-lg-4 col-md-4">@ViewBag.TotalPending</div>
+                        <div class="col-lg-2 col-md-2"><b>Total&nbsp;Served</b></div>
+                        <div class="col-lg-4 col-md-4">@ViewBag.TotalServed</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2 col-md-2 tr-odd"><b>Highest&nbsp;Waiting</b></div>
+                        <div class="col-lg-4 col-md-4 tr-odd">@ViewBag.HighestWaiting</div>
+                        <div class="col-lg-2 col-md-2 tr-odd"><b>Average&nbsp;Waiting</b></div>
+                        <div class="col-lg-4 col-md-4 tr-odd">@ViewBag.AverageWaiting</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2 col-md-2"><b>Login&nbsp;Time</b></div>
+                        <div class="col-lg-4 col-md-4">@ViewBag.LoginTime</div>
+                        <div class="col-lg-2 col-md-2"><b>Serving&nbsp;Time</b></div>
+                        <div class="col-lg-4 col-md-4">@ViewBag.ServingTime</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <b class="btn btn-color">Token Status:</b>
+        <table class="table table-hover table-bordered" id="data">
+
+            <tr id="Hedding">
+                <th>
+                    @Html.DisplayName("Service")
+                </th>
+                <th>
+                    @Html.DisplayName("Total")
+                </th>
+                <th>
+                    @Html.DisplayName("Served")
+                </th>
+                <th>
+                    @Html.DisplayName("Serving")
+                </th>
+                <th>
+                    @Html.DisplayName("Waiting")
+                </th>
+                <th>
+                    @Html.DisplayName("Missing")
+                </th>
+
+            </tr>
+
+            @foreach (VMDashboardDeviceToken item in ViewBag.tokenList)
+            {
+                if (item.service_name.ToUpper() == "TOTAL")
+                {
+                    <tr id="Hedding">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.service_name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.total)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.served)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.serving)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.waiting)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.missing)
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.service_name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.total)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.served)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.serving)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.waiting)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.missing)
+                        </td>
+                    </tr>
+                }
+            }
+
+
+        </table>
+
+        <b class="btn btn-color">Service Status:</b>
+        <table class="table table-hover table-bordered" id="data">
+
+            <tr id="Hedding">
+                <th>
+                    @Html.DisplayName("Service")
+                </th>
+                <th>
+                    @Html.DisplayName("Served")
+                </th>
+
+
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                if (item.service_name.ToUpper() == "TOTAL")
+                {
+                    <tr id="Hedding">
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.service_name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.served)
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.service_name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.served)
+                        </td>
+                    </tr>
+                }
+            }
+
+
+        </table>
+    </div>
+</div>
+
+
+

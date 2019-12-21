@@ -1,0 +1,81 @@
+﻿@using qms.ViewModels
+<br />
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+    @*<div class="row text-center">
+            @Html.Label("Department", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
+                @Html.DropDownList("department_id", null, "All Department", htmlAttributes: new { @class = "form-control" })*
+                <select name="department_name" class="form-control" id="department_name">
+                    <option value="">All Department</option>
+                    @foreach (var item in ViewBag.departmentList)
+                    {
+                        if (item.department_id == ViewBag.userDepartmentId)
+                        {
+                            <option value="@item.department_id" selected="selected">@item.department_name</option>
+                        }
+                        else
+                        {
+                            <option value="@item.department_id">@item.department_name</option>
+                        }
+
+                    }
+                </select>
+            </div>
+            @*<div class="col-md-2 left">
+                <a class="btn btn-color" href="" onclick="return reload();">Refresh</a>
+            </div>*
+        </div>*@
+    <div class="form-group">
+        @Html.Label("Department:", new { @class = "col-md-1 control-label" })
+        <div class="col-md-3" style="margin-bottom : 10px;">
+
+            <select name="department_name" class="form-control" id="department_name">
+                <option value="">All Department</option>
+                @foreach (var item in ViewBag.departmentList)
+                {
+                    if (item.department_id == ViewBag.userDepartmentId)
+                    {
+                        <option value="@item.department_id" selected="selected">@item.department_name</option>
+                    }
+                    else
+                    {
+                        <option value="@item.department_id">@item.department_name</option>
+                    }
+
+                }
+            </select>
+        </div>
+    </div>
+    <div class="col-md-12 scrollbar table-scroll">
+        @*<b class="btn btn-color">Device Status</b>*@
+        <table class="table table-hover table-bordered" id="tblDeviceStatusList">
+
+            <tr id="Hedding">
+                <th>
+                    @Html.DisplayName("Department")
+                </th>
+                <th>
+                    @Html.DisplayName("Device")
+                </th>
+                <th>
+                    @Html.DisplayName("Playlist")
+                </th>
+                <th>
+                    @Html.DisplayName("Scroll")
+                </th>
+            </tr>
+        </table>
+    </div>
+
+
+
+
+
+        @section scripts {
+            <script src="~/Scripts/sqms/date.js"></script>
+            <script src="~/Scripts/sqms/dashboard-admin.js"></script>
+
+        }

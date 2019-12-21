@@ -1,0 +1,176 @@
+﻿@*@model qms.Models.tblDevice*@
+@model   qms.ViewModels.VMDevice
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+@{
+    ViewBag.Title = "Create New Device";
+}
+
+<div class="container">
+    <div class="row">
+        <h4 class="page-head-line">Device > Create</h4>
+        <div class="col-md-5">
+            @using (Html.BeginForm(null, null, FormMethod.Post, new { @autocomplete = "off" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @*@Html.LabelFor(model => model.department_id, "department_id", htmlAttributes: new { @class = "control-label col-md-4" })*@
+                        @*@Html.Label("Department Name", htmlAttributes: new { @class = "control-label col-md-4" })*@
+                        <div class="col-md-8">
+                            @Html.DropDownList("department_id", null, "Select Department Name", htmlAttributes: new { @class = "form-control" })
+                            @*@Html.ValidationMessageFor(model => model.department_id, "", new { @class = "text-danger" })*@
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @*@Html.LabelFor(model => model.device_no, htmlAttributes: new { @class = "control-label col-md-4" })*@
+                        @*@Html.Label("Device No", htmlAttributes: new { @class = "control-label col-md-4" })*@
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.device_no, new { htmlAttributes = new { @class = "form-control", @placeholder = "Device No" } })
+                            @Html.ValidationMessageFor(model => model.device_no, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @*@Html.LabelFor(model => model.device_no, htmlAttributes: new { @class = "control-label col-md-4" })*@
+                        @*@Html.Label("Device No", htmlAttributes: new { @class = "control-label col-md-4" })*@
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.device_name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Device Name" } })
+                            @Html.ValidationMessageFor(model => model.device_name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @*@Html.LabelFor(model => model.location, htmlAttributes: new { @class = "control-label col-md-4" })*@
+                        @*@Html.Label("Location", htmlAttributes: new { @class = "control-label col-md-4" })*@
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.location, new { htmlAttributes = new { @class = "form-control", @placeholder = "Location" } })
+                            @Html.ValidationMessageFor(model => model.location, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @*@Html.LabelFor(m => m.Email, new { @class = "col-md-4 control-label" })*@
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control alphaNumericDot", @placeholder = "User Name", @autocomplete = "new-password" })
+                            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div id="passwordDiv">
+                        <div class="form-group">
+                            @*@Html.LabelFor(m => m.Password, new { @class = "col-md-4 control-label" })*@
+                            <div class="col-md-8">
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password", @autocomplete = "new-password" })
+                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @*@Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-4 control-label" })*@
+                            <div class="col-md-8">
+                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password", @autocomplete = "new-password" })
+                                @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-8">
+                            <input type="submit" value="Create" class="btn btn-color" />
+                            <button class="btn btn-color">
+                                @Html.ActionLink("Back to List", "Index")
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="col-md-6">
+            <div class="col-md-12 scrollbar table-scroll">
+                <table class="table table-hover table-bordered" id="data">
+                    <tr id="Hedding">
+                        <th>
+                            @Html.DisplayName("Department Name")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Device Name")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Device No")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Location")
+                        </th>
+                    </tr>
+                    @foreach (var item in ViewBag.deviceList)
+                    {
+                    <tr>
+                        <td>@item.department_name</td>
+                        <td>@item.device_name</td>
+                        <td>@item.device_no</td>
+                        <td>@item.location</td>
+                    </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section scripts{
+    <script src="~/Scripts/sqms/device.js"></script>
+    <script>
+        function FilterTable() {
+            index = -1;
+            inp = $('#filterBox').val();
+            $("#data:visible tr:not(:has(>th))").each(function () {
+                if (~$(this).text().toLowerCase().indexOf(inp.toLowerCase())) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+            $('#Hedding').show();
+        };
+
+        $(document).ready(function () {
+            inp = $("#department_id option:selected").text();
+            if (inp == "Select Department Name") {
+                $("#department_id").attr('disabled', false);
+            }
+            else $("#department_id").attr('disabled', true);
+            FilterTable2();
+            $("#department_id").change(function () {
+                // var selectedDepartment = $("#department_name option:selected").text();
+                FilterTable2();
+
+            })
+        });
+
+        function FilterTable2() {
+            index = -1;
+            inp = $("#department_id option:selected").text();
+            if (inp == "Select Department Name") {
+                inp = "";
+            }
+            $("#data:visible tr:not(:has(>th))").each(function () {
+                if (~$(this).text().toLowerCase().indexOf(inp.toLowerCase())) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+            $('#Hedding').show();
+        };
+
+
+
+
+
+
+        
+    </script>
+}

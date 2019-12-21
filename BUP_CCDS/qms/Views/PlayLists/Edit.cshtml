@@ -1,0 +1,52 @@
+﻿@model qms.Models.tblPlayList
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+@{
+    ViewBag.Title = "Play List Edit";
+}
+<div class="container">
+    <div class="row">
+        <h4 class="page-head-line">Play List > Edit</h4>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.playlist_id)
+            @Html.HiddenFor(model => model.is_global)
+            @Html.HiddenFor(model => model.userId)
+
+            <div class="form-group">
+                @*@Html.Label("User ID", htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.hometown, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                    @Html.ValidationMessageFor(model => model.hometown, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+            <div class="form-group">
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.playlist_name, new { htmlAttributes = new { @class = "form-control Next", @placeholder = "Playlist Name" } })
+                    @Html.ValidationMessageFor(model => model.playlist_name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-4">
+                    <input type="submit" value="Update" class="btn btn-color" />
+                    <button class="btn btn-color">
+                        @Html.ActionLink("Back to List", "Index")
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        }
+    </div>
+</div>
+

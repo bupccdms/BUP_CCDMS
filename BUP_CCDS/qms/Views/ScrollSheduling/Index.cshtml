@@ -1,0 +1,100 @@
+﻿@model IEnumerable<qms.ViewModels.VMScrollSheduling>
+@{
+    ViewBag.Title = "Scroll Scheduling List";
+}
+
+<br />
+
+<div class="container">
+    <div class="row">
+        <h4 class="page-head-line">Scroll Scheduling > List </h4>
+
+
+        <a href='@Url.Action("Create", "ScrollSheduling")' style="margin-bottom : 10px;">
+            <button class="btn btn-color" style="margin-bottom : 10px;">Create New Scroll Scheduling</button>
+        </a>
+
+        <div class="col-md-12 scrollbar table-cont" id="table-cont">
+            <table class="table table-hover table-bordered" id="data">
+                <thead>
+                    <tr id="Hedding">
+                        <th>
+                            Content
+                        </th>
+                        <th>
+                            When Start
+                        </th>
+                        <th>
+                            Duration
+                        </th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.content_bn)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.when_start)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.duration)
+                            </td>
+                            <td>
+                                <button class="btn btn-color">
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.scroll_Sheduling_id })
+                                </button>
+                            </td>
+                            <td>
+                                <button class="btn btn-color">
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.scroll_Sheduling_id })
+                                </button>
+                            </td>
+                            <td>
+                                @if (item.is_active == 0)
+                                {
+                                    <button class="btn btn-color">
+                                        @Html.ActionLink("Approved", "Approved", new { id = item.scroll_Sheduling_id })
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/sqms/fixed-table.js"></script>
+    @{
+        if (TempData["message"] != null)
+        {
+            <script type="text/javascript">
+            var message = @((TempData["message"] != null).ToString().ToLower());
+
+            if (message == true)
+                toastr["success"]("Save Successfull.");
+            else
+                toastr["error"]("Save Fail.");
+            </script>
+        }
+
+        if (TempData["mgs"] != null)
+        {
+            <script type="text/javascript">
+            var message = @((TempData["mgs"] != null).ToString().ToLower());
+
+            if (message == true)
+                toastr["success"]("Update Successfull.");
+            else
+                toastr["error"]("Update Fail.");
+            </script>
+        }
+    }
+}

@@ -1,0 +1,127 @@
+﻿@model IEnumerable<qms.ViewModels.VMCustomContent>
+@{
+    ViewBag.Title = "Custom Content Information";
+}
+<div class="container">
+    <div class="row">
+        <h4 class="page-head-line">Custom Content > List </h4>
+        <div class="row">
+            <div class="col-md-3" style="margin-bottom : 10px;">
+                <a href='@Url.Action("Create", "CustomContent")'>
+                    <button class="btn btn-color" style="margin-bottom : 10px;">New Custom Content</button>
+                </a>
+
+            </div>
+            <div class="col-md-6"></div>
+            <div class="col-md-3">
+                <input type="text" style="font-size: medium;background-color: lightyellow" class="pull-right col-md-3 form-control" placeholder="Search" id="filterBox" onkeyup="FilterTable()" />
+            </div>
+        </div>
+
+
+
+        <div class="col-md-12 scrollbar table-cont" id="table-cont">
+            <table class="table table-hover table-bordered" id="data">
+                <thead>
+                    <tr id="Hedding">
+                        @*<th></th>*@
+                        @*<th>
+                                @Html.DisplayName("National?")
+                            </th>*@
+                        <th>
+                            @Html.DisplayName("Content")
+                        </th>
+                        <th>
+                            @Html.DisplayName("URL?")
+                        </th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            @*<td>
+                                    @if (item.is_global == 0)
+                                    {
+                                        <button class="btn btn-color">
+                                            @Html.ActionLink("Set National", "SetNational", new { id = item.scroll_id })
+                                        </button>
+                                    }
+
+                                </td>*@
+                            @*<td style="text-align:center">
+                                    @if (item.is_global > 0)
+                                    {
+                                        @Html.DisplayName("Yes")
+                                    }
+                                    else
+                                    {
+                                        @Html.DisplayName("No")
+                                    }
+                                </td>*@
+                            <td>
+                                @Html.Raw(item.content)
+                            </td>
+                            <td>
+                                @if (item.is_url > 0)
+                                {
+                                    @Html.DisplayName("Yes")
+                                }
+                                else
+                                {
+                                    @Html.DisplayName("No")
+                                }
+                                @*@Html.DisplayFor(modelItem => item.is_url)*@
+                            </td>
+                            <td>
+                                <button class="btn btn-color">
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.custom_content_id })
+                                </button>
+
+                            </td>
+                            <td>
+                                <button class="btn btn-color">
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.custom_content_id })
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/sqms/department.js"></script>
+    <script src="~/Scripts/sqms/fixed-table.js"></script>
+    @{
+        if (TempData["message"] != null)
+        {
+            <script type="text/javascript">
+            var message = @((TempData["message"] != null).ToString().ToLower());
+
+            if (message == true)
+                toastr["success"]("Save Successfull.");
+            else
+                toastr["error"]("Save Fail.");
+            </script>
+        }
+
+        if (TempData["mgs"] != null)
+        {
+            <script type="text/javascript">
+            var message = @((TempData["mgs"] != null).ToString().ToLower());
+
+            if (message == true)
+                toastr["success"]("Update Successfull.");
+            else
+                toastr["error"]("Update Fail.");
+            </script>
+        }
+    }
+}
+

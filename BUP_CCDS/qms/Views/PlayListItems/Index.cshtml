@@ -1,0 +1,203 @@
+﻿@model IEnumerable<qms.Models.tblPlayListItem>
+@{
+    ViewBag.Title = "Play List Information";
+}
+<div class="container">
+    <div class="row">
+        <h4 class="page-head-line">Play List> @ViewBag.playlist_name> Items </h4>
+        <div class="row">
+            <div class="col-md-3" style="margin-bottom : 10px;">
+                <a href='@Url.Action("Create", "PlayListItems", new { playlist_id = ViewBag.playlist_id })'>
+                    <button class="btn btn-color" style="margin-bottom : 10px;">New Item</button>
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="row text-center table-bordered table-scroll" style="padding-top:15px; padding-bottom:15px; margin-bottom:15px;">
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+                    @if (item.file_type == "VIDEO")
+                    {
+                        <video class="img-thumbnail" controls>
+                            <source type="video/@item.file_extenstion" src="@((Request.ApplicationPath==@"/"?"":Request.ApplicationPath) +  item.item_url + "/" + item.file_name)">
+                        </video>
+                        <div class="col-lg-12" style="margin-bottom:10px">
+                            @("[" + item.sort_order + "] " + item.file_name + " (" + item.duration + " sec.)")
+
+
+                        </div>
+                        <div class="col-lg-12" style="margin-bottom:10px">
+                            <button class="btn btn-color">
+                                @Html.ActionLink("Edit", "Edit", new { id = item.playlistitem_id })
+                            </button>
+                            <button class="btn btn-color">
+                                @Html.ActionLink("Delete", "Delete", new { id = item.playlistitem_id })
+                            </button>
+                        </div>
+                    }
+                    else if (item.file_type == "IMAGE")
+                    {
+                        <img class="img-thumbnail"
+                             src="@((Request.ApplicationPath==@"/"?"":Request.ApplicationPath) +  item.item_url + "/" + item.file_name)"
+                             alt="@item.file_name">
+                        <div class="col-lg-12" style="margin-bottom:10px">
+                            @("[" + item.sort_order + "] " + item.file_name + " (" + item.duration_in_second + " sec.)")
+                        </div>
+                        <div class="col-lg-12" style="margin-bottom:10px">
+                            <button class="btn btn-color">
+                                @Html.ActionLink("Edit", "Edit", new { id = item.playlistitem_id })
+                            </button>
+                            <button class="btn btn-color">
+                                @Html.ActionLink("Delete", "Delete", new { id = item.playlistitem_id })
+                            </button>
+                        </div>
+                    }
+                    else if (item.file_type == "TEXT")
+                    {
+                        <img id="logo" src="~/img/text.png" alt="@item.file_name" style="height: 150px;" />
+                        @*<img class="img-thumbnail"
+                            src="@((Request.ApplicationPath==@"/"?"":Request.ApplicationPath)  + "/" + item.file_type)"
+                            alt="@item.file_name">*@
+                        <div class="col-lg-12" style="margin-bottom:10px">
+                            @("[" + item.sort_order + "] " + item.file_type + " (" + item.duration_in_second + " sec.)")
+                        </div>
+                        <div class="col-lg-12" style="margin-bottom:10px">
+                            <button class="btn btn-color">
+                                @Html.ActionLink("Edit", "Edit", new { id = item.playlistitem_id })
+                            </button>
+                            <button class="btn btn-color">
+                                @Html.ActionLink("Delete", "Delete", new { id = item.playlistitem_id })
+                            </button>
+                        </div>
+                    }
+                    else if (item.file_type == "URL")
+                    {
+                        <img src="~/img/url.png" alt="@item.file_name" style="height: 150px;" />
+                        @*<img class="img-thumbnail"
+                            src="@((Request.ApplicationPath==@"/"?"":Request.ApplicationPath)  + "/" + item.file_type)"
+                            alt="@item.file_name">*@
+                        <div class="col-lg-12" style="margin-bottom:10px">
+                            @("[" + item.sort_order + "] " + ViewBag.content + " (" + item.duration_in_second + " sec.)")
+                        </div>
+                        <div class="col-lg-12" style="margin-bottom:10px">
+                            <button class="btn btn-color">
+                                @Html.ActionLink("Edit", "Edit", new { id = item.playlistitem_id })
+                            </button>
+                            <button class="btn btn-color">
+                                @Html.ActionLink("Delete", "Delete", new { id = item.playlistitem_id })
+                            </button>
+                        </div>
+                    }
+                    else if (item.file_type == "DOC")
+                    {
+                        <img src="~/img/doc.jpg" alt="@item.file_name" style="height:180px;" />
+                        <div class="col-lg-12" style="margin-bottom:10px">
+                            @("[" + item.sort_order + "] " + item.file_type + " (" + item.duration_in_second + " sec.)")
+                        </div>
+                        <div class="col-lg-12" style="margin-bottom:10px">
+                            <button class="btn btn-color">
+                                @Html.ActionLink("Edit", "Edit", new { id = item.playlistitem_id })
+                            </button>
+                            <button class="btn btn-color">
+                                @Html.ActionLink("Delete", "Delete", new { id = item.playlistitem_id })
+                            </button>
+                        </div>
+                    }
+                    else if (item.file_type == "EXCEL")
+                    {
+                        <img src="~/img/excel_img.jpg" alt="@item.file_name" style="height:180px;" />
+                        <div class="col-lg-12" style="margin-bottom:10px">
+                            @("[" + item.sort_order + "] " + item.file_type + " (" + item.duration_in_second + " sec.)")
+                        </div>
+                        <div class="col-lg-12" style="margin-bottom:10px">
+                            <button class="btn btn-color">
+                                @Html.ActionLink("Edit", "Edit", new { id = item.playlistitem_id })
+                            </button>
+                            <button class="btn btn-color">
+                                @Html.ActionLink("Delete", "Delete", new { id = item.playlistitem_id })
+                            </button>
+                        </div>
+                    }
+                    else if (item.file_type == "POWERPOINT")
+                    {
+                        <img src="~/img/powerpoint_img.png" alt="@item.file_name" style="height:180px;" />
+                        <div class="col-lg-12" style="margin-bottom:10px">
+                            @("[" + item.sort_order + "] " + item.file_type + " (" + item.duration_in_second + " sec.)")
+                        </div>
+                        <div class="col-lg-12" style="margin-bottom:10px">
+                            <button class="btn btn-color">
+                                @Html.ActionLink("Edit", "Edit", new { id = item.playlistitem_id })
+                            </button>
+                            <button class="btn btn-color">
+                                @Html.ActionLink("Delete", "Delete", new { id = item.playlistitem_id })
+                            </button>
+                        </div>
+                    }
+
+                    else
+                    {
+                        <img src="~/img/pdf.png" alt="@item.file_name" style="height:160px;" />
+                        <div class="col-lg-12" style="margin-bottom:10px">
+                            @("[" + item.sort_order + "] " + item.file_type + " (" + item.duration_in_second + " sec.)")
+                        </div>
+                        <div class="col-lg-12" style="margin-bottom:10px">
+                            <button class="btn btn-color">
+                                @Html.ActionLink("Edit", "Edit", new { id = item.playlistitem_id })
+                            </button>
+                            <button class="btn btn-color">
+                                @Html.ActionLink("Delete", "Delete", new { id = item.playlistitem_id })
+                            </button>
+                        </div>
+                    }
+
+                </div>
+            }
+
+
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-8">
+                <button class="btn btn-color">
+                    @Html.ActionLink("Back to Play List", "Index", "PlayLists", new { area = "" }, null)
+                </button>
+
+            </div>
+        </div>
+
+    </div>
+    <br />
+</div>
+
+@section scripts{
+    <script src="~/Scripts/sqms/department.js"></script>
+    @{
+        if (TempData["message"] != null)
+        {
+            <script type="text/javascript">
+            var message = @((TempData["message"] != null).ToString().ToLower());
+
+            if (message == true)
+                toastr["success"]("Save Successfull.");
+            else
+                toastr["error"]("Save Fail.");
+            </script>
+        }
+
+        if (TempData["mgs"] != null)
+        {
+            <script type="text/javascript">
+            var message = @((TempData["mgs"] != null).ToString().ToLower());
+
+            if (message == true)
+                toastr["success"]("Update Successfull.");
+            else
+                toastr["error"]("Update Fail.");
+            </script>
+        }
+    }
+}
+

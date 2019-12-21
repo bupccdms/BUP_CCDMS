@@ -1,0 +1,35 @@
+﻿@using qms.Utility 
+
+@{ 
+    SessionManager sm = new SessionManager(Session);
+    if (sm.device_id > 0)
+    {
+        <ul class="nav navbar-nav">
+            <li>@Html.ActionLink("Daily Services", "Index", "ServiceDetails", new { area = "" }, null)</li>
+            <li>@Html.ActionLink("Daily Breaks", "Index", "DailyBreaks", new { area = "" }, null)</li>
+            @*<li>@Html.ActionLink("Reports", "LocalCustomersReport", "Report", new { area = "" }, null)</li>*@
+            @*<li class="dropdown">
+                <a class="btn dropdown-toggle" data-toggle="dropdown">
+                    Reports
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>@Html.ActionLink("Local Icon Customer", "LocalCustomersReport", "Report", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("Single VS Multiple Visit Summary", "SingleVSMultipleVisitSummaryReport", "Report", new { area = "" }, null)</li>
+
+                    <li>@Html.ActionLink("Agent Wise Summary", "AgentWiseReport", "Report", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("Service Summary Report", "ServiceSummaryReport", "Report", new { area = "" }, null)</li>
+
+                    <li>@Html.ActionLink("General Search", "GeneralSearchReport", "Report", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("Agent Log Summary Report", "AgentLogSummaryReport", "Report", new { area = "" }, null)</li>
+
+                    <li>@Html.ActionLink("Break Report", "BreakReport", "Report", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("Top Five(5) Services", "TopFiveServicesReport", "Report", new { area = "" }, null)</li>
+
+                    <li>@Html.ActionLink("Token Exceeding 10 Minutes", "TokenExceedingReport", "Report", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("LogOut Detail Report", "LogOutDetailReport", "Report", new { area = "" }, null)</li>
+                </ul>
+            </li>*@       
+        </ul>
+    }
+}

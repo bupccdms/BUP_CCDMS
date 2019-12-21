@@ -1,0 +1,68 @@
+﻿@model qms.Models.tblPlayListItem
+
+@{
+    ViewBag.Title = "Playlist Item Delete";
+}
+
+<div class="container">
+    <div class="row">
+        <h4 class="page-head-line">Play List > @Model.playlist_name> Item > Delete</h4>
+        
+        <div class="col-lg-offset-3 col-md-6">
+            <h3>Are you sure you want to delete this?</h3>
+            <dl class="dl-horizontal">
+                @*<dt>
+                    @Html.DisplayNameFor(model => model.item_url)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.item_url)
+                </dd>*@
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.file_name)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.file_name)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.file_type)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.file_type)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.duration_in_second)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.duration)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.sort_order)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.sort_order)
+                </dd>
+            </dl>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="col-lg-offset-1 form-actions no-color">
+                    <input type="submit" value="Delete" class="btn btn-color" />
+                    <button class="btn btn-color">
+                        @Html.ActionLink("Back to List", "Index", new { playlist_id = Model.playlist_id })
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<br />
+

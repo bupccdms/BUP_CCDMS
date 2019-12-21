@@ -1,0 +1,43 @@
+﻿
+<div class="row">
+
+    <h4 class="page-head-line">Set Scroll Time </h4>
+
+    <div class="col-md-5">
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                @*@ViewBag.scroll_id*@
+                <input type="hidden" value=@ViewBag.scroll_id id='scroll_id'>
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <input type="checkbox" id="ScrollTimeCheckbox" value="ScrollTime" onclick="checkScrollVal($(this).val())" checked /> Scroll With Time
+                &nbsp;
+                <input type="checkbox" id="is_scroll" value="Scroll" onclick="checkScrollVal($(this).val())" /> Scroll Without Time
+                <div class="form-group">
+                    <div class="col-md-8">
+                        <input type="number" id="scrollTime" class="form-control" name="scrollTime" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <h4 id="scroll"></h4>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <input type="button" value="Save" class="btn btn-color" onclick="publishWithScrollTime()" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@*</div>*@
+
+<script>
+</script>

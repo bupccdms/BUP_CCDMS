@@ -1,0 +1,212 @@
+﻿
+@model IEnumerable<qms.ViewModels.VMDevicePlayList>
+@{
+    ViewBag.Title = "Playlist Information";
+}
+<div class="container">
+    <div class="row">
+        <h4 class="page-head-line">Device > Playlist </h4>
+        <div class="row">
+            <div class="col-md-3" style="margin-bottom : 10px;">
+                <a href='@Url.Action("Create", "DevicePlayList")'>
+                    <button class="btn btn-color" style="margin-bottom : 10px;">Map Device Playlist</button>
+                </a>
+                <h4>Currently Running Device List</h4>
+                <div class="col-md-3" style="margin-bottom : 10px; display:none">
+
+                    <select name="department_name" class="form-control" id="department_name">
+                        <option value="">All Department</option>
+                        @foreach (var item in ViewBag.departmentList)
+                        {
+                            if (item.department_id == ViewBag.userDepartmentId)
+                            {
+                                <option value="@item.department_id" selected="selected">@item.department_name</option>
+                            }
+                            else
+                            {
+                                <option value="@item.department_id">@item.department_name</option>
+                            }
+
+                        }
+                    </select>
+
+                </div>
+            </div>
+            <div class="col-md-6"></div>
+            <div class="col-md-3">
+                <input type="text" style="font-size: medium;background-color: lightyellow" class="pull-right col-md-3 form-control" placeholder="Search" id="filterBox" onkeyup="FilterTable()" />
+            </div>
+        </div>
+
+
+
+        <div class="col-md-12 scrollbar table-cont" id="table-cont">
+            <table class="table table-hover table-bordered" id="data">
+                <thead>
+                    <tr id="Hedding">
+                        <th></th>
+                        <th></th>
+                        <th>
+                            @Html.DisplayName("Department Name")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Department Location")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Device Name")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Device No")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Device Location")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Playlist")
+                        </th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+
+                                <button class="btn btn-color">
+                                    @Html.ActionLink("Publish", "Publish", new { id = item.device_playlist_id })
+                                </button>
+
+
+                            </td>
+                            @if (item.is_active == 1)
+                            {
+                                <td style="background-color:#007F3D; color:#FFFFFF; text-align:center;">
+                                    @Html.Label("YES")
+                                </td>
+                            }
+                            else
+                            {
+                                <td style="background-color:#FF0000;color:#FFFFFF;text-align:center;">
+                                    @Html.Label("NO")
+                                </td>
+                            }
+                            @*<td>
+                            @if (item.is_active == 1)
+                            {
+                                @Html.Label("YES", new { style = "background-color:red;" })
+                            }
+                            else
+                            {
+                                @Html.Label("NO", new { style = "background-color:red;" })
+                            }
+                        </td>*@
+                            <td style="text-align:center">
+                                @Html.DisplayFor(modelItem => item.department_name)
+                            </td>
+                            <td style="text-align:center">
+                                @Html.DisplayFor(modelItem => item.Address)
+                            </td>
+
+                            <td style="text-align:center">
+                                @Html.DisplayFor(modelItem => item.device_name)
+                            </td>
+                            <td style="text-align:center">
+                                @Html.DisplayFor(modelItem => item.device_no)
+                            </td>
+                            <td style="text-align:center">
+                                @Html.DisplayFor(modelItem => item.location)
+                            </td>
+                            <td>
+                                <label class="cursor" onclick="return loadPlayListDialog('@item.playlist_id');">
+                                    @Html.DisplayFor(modelItem => item.playlist_name)
+                                </label>
+                                @*@Html.DisplayFor(modelItem => item.playlist_name)*@
+                            </td>
+                            <td>
+                                <button class="btn btn-color">
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.device_playlist_id })
+                                </button>
+
+                            </td>
+                            <td>
+                                <button class="btn btn-color">
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.device_playlist_id })
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div id="dialog-url-playList" title="Play List Item">
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            inp = $("#department_name option:selected").text();
+            if (inp == "All Department") {
+                $("#department_name").attr('disabled', false);
+            }
+            else $("#department_name").attr('disabled', true);
+
+            FilterTable2();
+            $("#department_name").change(function () {
+                // var selectedDepartment = $("#department_name option:selected").text();
+                FilterTable2();
+
+            });
+        });
+
+        function FilterTable2() {
+            index = -1;
+            inp = $("#department_name option:selected").text();
+            if (inp == "All Department") {
+                inp = "";
+            }
+            $("#data:visible tr:not(:has(>th))").each(function () {
+                if (~$(this).text().toLowerCase().indexOf(inp.toLowerCase())) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+            $('#Hedding').show();
+        };
+    </script>
+
+
+    <script src="~/Scripts/modal/modal.js"></script>
+    <script src="~/Scripts/sqms/device.js"></script>
+    <script src="~/Scripts/sqms/fixed-table.js"></script>
+    @{
+        if (TempData["message"] != null)
+        {
+            <script type="text/javascript">
+            var message = @((TempData["message"] != null).ToString().ToLower());
+
+            if (message == true)
+                toastr["success"]("Save Successfull.");
+            else
+                toastr["error"]("Save Fail.");
+            </script>
+        }
+
+        if (TempData["mgs"] != null)
+        {
+            <script type="text/javascript">
+            var message = @((TempData["mgs"] != null).ToString().ToLower());
+
+            if (message == true)
+                toastr["success"]("Update Successfull.");
+            else
+                toastr["error"]("Update Fail.");
+            </script>
+        }
+    }
+}
+

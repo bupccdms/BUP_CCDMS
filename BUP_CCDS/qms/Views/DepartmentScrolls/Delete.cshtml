@@ -1,0 +1,60 @@
+﻿@model qms.ViewModels.VMDepartmentScroll
+
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+@{
+    ViewBag.Title = "Department Scroll Delete";
+}
+
+<div class="container">
+    <div class="row">
+        <h4 class="page-head-line">Department Scroll > Delete</h4>
+        <h3>Are you sure you want to delete this?</h3>
+        <div>
+
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayName("Department")
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.department_name)
+                </dd>
+
+                @*<dt>
+                    @Html.DisplayName("Content (English)")
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.content_en)
+                </dd>*@
+
+                <dt>
+                    @Html.DisplayName("Content")
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.content_bn)
+                </dd>
+
+            </dl>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-color" /> |
+                <button class="btn btn-color">
+                    @Html.ActionLink("Back to List", "Index")
+                </button>
+                @*<a href='@Url.Action("Index")'>
+            <button class="btn btn-color">Back to List</button>
+        </a>*@
+            </div>
+            }
+        </div>
+        <br />
+    </div>
+</div>

@@ -1,0 +1,76 @@
+﻿@model IEnumerable<qms.Models.tblCustomerType>
+@{
+    ViewBag.Title = "Customer Type";
+}
+
+<div class="container">
+    <div class="row">
+        <h4 class="page-head-line">Customer Type > List</h4>
+
+        <a href='@Url.Action("Create", "CustomerTypes")' style="margin-bottom : 10px;">
+            <button class="btn btn-color" style="margin-bottom : 10px;">Create New Customer Type</button>
+        </a>
+
+        <div class="col-md-12 scrollbar table-scroll">
+            <table class="table table-hover table-bordered" id="data">
+                <tr id="Hedding">
+                    <th></th>
+                    <th>
+                        @Html.DisplayName("Customer Type Name")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Priority")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Token Prefix")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Is Default")
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @if (item.is_default == 0)
+                            {
+                                <button class="btn btn-color">
+                                    @Html.ActionLink("Set Default", "SetDefault", new { id = item.customer_type_id })
+                                </button>
+                            }
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.customer_type_name)
+                        </td>
+                        <td>@Html.DisplayFor(modelItem => item.priority)</td>
+                        <td>@Html.DisplayFor(modelItem => item.token_prefix)</td>
+                        <td>
+                            @if (item.is_default > 0)
+                            {
+                                @Html.DisplayName("Yes")
+                            }
+                            else
+                            {
+                                @Html.DisplayName("No")
+                            }
+
+                        </td>
+                        <td>
+                            <button class="btn btn-color">
+                                @Html.ActionLink("Edit", "Edit", new { id = item.customer_type_id })
+                            </button>
+
+                        </td>
+
+                    </tr>
+                }
+
+            </table>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,44 @@
+﻿@using Microsoft.AspNet.Identity
+@using qms.Utility;
+@{ 
+    SessionManager sm = new SessionManager(Session);
+}
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", new { area = "" }, FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+
+<ul class="nav navbar-nav navbar-right">
+
+    @if (Request.IsAuthenticated)
+    {
+        <li>
+            @if (!sm.IsActiveDirectoryUser)
+            {
+                if (sm.PasswordExpiryNotifyBeforeDays > 0)
+                {
+                    <a href='@Url.Action("ChangePassword", "Manage")'>
+                        <span class="badge" title="Password will expire within">@sm.PasswordExpiryNotifyBeforeDays.ToString()</span>
+                        <span>Change Password</span>
+
+                    </a>
+                }
+                else
+                {
+                    @Html.ActionLink("Change Password", "ChangePassword", "Manage", routeValues: new { area = "" }, htmlAttributes: new { title = "Change Password" })
+                }
+            }
+        </li>
+        if (User.IsInRole("Service Holder"))
+        {
+            <li>@Html.ActionLink("Log Off", "LogOff", "Account", new { area = "" }, htmlAttributes: new { id= "logout" })</li>
+        }
+        else
+        {
+            <li><a href="javascript:sessionStorage.removeItem('accessToken');$('#logoutForm').submit();" id="logout">Log off</a></li>
+        }
+    }
+</ul>
+    }
+}

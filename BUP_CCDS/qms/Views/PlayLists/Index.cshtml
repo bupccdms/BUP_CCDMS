@@ -1,0 +1,172 @@
+﻿@model IEnumerable<qms.Models.tblPlayList>
+@{
+    ViewBag.Title = "Play List Information";
+}
+<div class="container">
+    <div class="row">
+        <h4 class="page-head-line">Play List > List </h4>
+        <div class="row">
+            <div class="col-md-3" style="margin-bottom : 10px;">
+                <a href='@Url.Action("Create", "PlayLists")'>
+                    <button class="btn btn-color" style="margin-bottom : 10px;">New Play List</button>
+                </a>
+
+            </div>
+            <div class="col-md-6"></div>
+            <div class="col-md-3">
+                <input type="text" style="font-size: medium;background-color: lightyellow" class="pull-right col-md-3 form-control" placeholder="Search" id="filterBox" onkeyup="FilterTable()" />
+            </div>
+        </div>
+
+
+
+        <div class="col-md-12 scrollbar table-cont" id="table-cont">
+            <table class="table table-hover table-bordered" id="data">
+                <thead>
+                    <tr id="Hedding">
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <th></th>
+                        }
+                        <th>
+                            @Html.DisplayName("Global")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Name")
+                        </th>
+                        <th>Created By</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <td>
+                                    @if (item.is_global == 0)
+                                    {
+                                        <button class="btn btn-color">
+                                            @Html.ActionLink("Set Global", "SetGlobal", new { id = item.playlist_id })
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        if (item.is_publish == 0)
+                                        {
+                                        <button class="btn btn-color" style="background-color:#f7b42c" onclick="return loadPlaylistTimeDialog('@item.playlist_id');">
+                                            Publish To All
+                                        </button>
+                                            @*<button class="btn btn-color" style="background-color:#f7b42c">
+                                                @Html.ActionLink("Publish To All", "PublishToAll", new { id = item.playlist_id })
+                                            </button>*@
+                                        }
+                                        else
+                                        {
+                                        <button class="btn btn-color" onclick="return loadPlaylistTimeDialog('@item.playlist_id');">
+                                            @*@Html.ActionLink("Publish To All", "PublishToAll", new { id = item.playlist_id })*@
+                                            Publish To All
+                                        </button>
+                                        }
+
+                                    }
+
+                                </td>
+                            }
+                            <td style="text-align:center">
+                                @if (item.is_global > 0)
+                                {
+                                    <button class="btn btn-color btn_de">
+                                        @Html.DisplayName("Yes")
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-danger btn_custom">
+                                        @Html.DisplayName("No")
+                                    </button>
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.playlist_name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.hometown)
+                            </td>
+                            <td>
+                                <button class="btn btn-color">
+                                    @Html.ActionLink("Items", "Index", "PlayListItems", new { playlist_id = item.playlist_id }, null)
+                                </button>
+
+                            </td>
+                            <td>
+                                <button class="btn btn-color">
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.playlist_id })
+                                </button>
+
+                            </td>
+                            <td>
+                                @if (item.is_global == 0)
+                                {
+                                    <button class="btn btn-color">
+                                        @Html.ActionLink("Delete", "Delete", new { id = item.playlist_id })
+                                    </button>
+                                }
+
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div id="dialog-playList" title="Play List">
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/sqms/department.js"></script>
+    <script src="~/Scripts/sqms/fixed-table.js"></script>
+    @{
+        if (TempData["message"] != null)
+        {
+            <script type="text/javascript">
+            var message = @((TempData["message"] != null).ToString().ToLower());
+
+            if (message == true)
+                toastr["success"]("Save Successfull.");
+            else
+                toastr["error"]("Save Fail.");
+            </script>
+        }
+
+        if (TempData["mgs"] != null)
+        {
+            <script type="text/javascript">
+            var message = @((TempData["mgs"] != null).ToString().ToLower());
+
+            if (message == true)
+                toastr["success"]("Update Successfull.");
+            else
+                toastr["error"]("Update Fail.");
+            </script>
+        }
+        if (TempData["mgsDelete"] != null)
+        {
+            <script type="text/javascript">
+            var message = @((TempData["mgsDelete"] != null).ToString().ToLower());
+
+                if (message == false)
+                    toastr["error"]("PlayList cannot be deleted because it is used another!");
+                else
+                    toastr["error"]("PlayList cannot be deleted because it is used another!");
+
+            </script>
+        }
+    }
+}
+

@@ -1,0 +1,55 @@
+﻿@model qms.Models.tblPlayList
+
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+@{
+    ViewBag.Title = "Play List Detail";
+}
+
+<div class="container">
+    <div class="row">
+        <h4 class="page-head-line">Play List > Detail</h4>
+        
+        <div>
+
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayName("Force?")
+                </dt>
+
+                <dd>
+                    @if (Model.is_global > 0)
+                    {
+                        @Html.DisplayName("Yes")
+                    }
+                    else
+                    {
+                        @Html.DisplayName("No")
+                    }
+                </dd>
+
+                <dt>
+                    @Html.DisplayName("Playlist Name")
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.playlist_name)
+                </dd>
+
+
+
+            </dl>
+
+            
+
+            <div class="form-actions no-color">
+                <button class="btn btn-color">
+                    @Html.ActionLink("Back to List", "Index")
+                </button>
+            </div>
+           
+        </div>
+        <br />
+    </div>
+</div>

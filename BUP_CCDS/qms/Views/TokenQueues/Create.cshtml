@@ -1,0 +1,106 @@
+﻿@model qms.ViewModels.VMTokenQueue
+
+@{
+    ViewBag.Title = "New Token";
+    Layout = "_LayoutToken.cshtml";
+}
+<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+<style>
+    .keyPadBtn{
+        padding:5px 0px;
+        background:#007F3D;
+        font-weight:bold;
+        border:0px solid #999999;
+        margin:2px;
+        height:90px;
+        text-align:center;
+        font-size:30px;
+        RefCursor:pointer;
+    }
+</style>
+<div class="container" style="margin-left:15px; padding:3px">
+    <div id="printableArea" class="hide">
+        <h5>Date : <span id="date"></span></h5>
+        <h3>Token# <span id="printTokenId"></span></h3>
+    </div>
+    <input type="hidden" id="hidtokenNo" name="hidtokenNo" />
+    <input type="hidden" id="mobileNo" name="hidMobileNo" />
+    <input type="hidden" id="tokenNo" name="hidMobileNo" />
+
+    <div class="col-md-offset-2 col-md-6" style="padding:10px; 
+        background:#ffd800; 
+        text-align:center; color:blue;
+        width:93%;
+        font-size:35px">
+        <div id="message">
+            TOKEN NO.
+        </div>
+    </div>
+    <br />
+    <div class="row col-md-offset-2 pull-left" style="border:1px solid #EAEAEA; 
+            width:93%;position:relative; padding-top:5px;
+            text-align:center;
+            padding-left:5px; 
+            margin-top:25px">
+        @foreach (var item in ViewBag.ServiceTypeList)
+        {
+            <label for="@item.service_type_id" class="btn btn-color" hidden="hidden" style="padding:10px">@item.service_type_name</label>
+            <input type="radio" class="btn btn-color" name="radio-service" id="@item.service_type_id" value="@item.service_type_id" />
+        }
+    </div>
+    <div class="row col-md-offset-3 col-md-10" style="font-size:35px;padding:25px 0px;" >
+        Please Enter Your 11 Digit Phone Number
+    </div>
+   
+    <div class="row col-md-offset-2 col-md-10" style="position:relative; margin-top:10px">
+        <label id="contact_no" class="form-control" style="font-size:50px; width:87%; height:70px;">01</label>
+    </div>
+    <div class="col-md-4"></div>
+    <div class="row" style="margin-left:-15px; margin-right:-15px; margin-top:10px; padding:15px 0px;">
+        <div class="col col-md-offset-2 col-md-12">
+            <div class="row">
+                <div class="col col-xs-3 keyPadBtn" style="font-size:40px;padding:25px 0px;" onclick="AddNmber('1');">1</div>
+                <div class="col col-xs-3 keyPadBtn" style="font-size:40px;padding:25px 0px;" onclick="AddNmber('2');">2</div>
+                <div class="col col-xs-3 keyPadBtn" style="font-size:40px;padding:25px 0px;" onclick="AddNmber('3');">3</div>                
+            </div>
+            <div class="row">
+                <div class="col col-xs-3 keyPadBtn" style="font-size:40px;padding:25px 0px;" onclick="AddNmber('4');">4</div>
+                <div class="col col-xs-3 keyPadBtn" style="font-size:40px;padding:25px 0px;" onclick="AddNmber('5');">5</div>
+                <div class="col col-xs-3 keyPadBtn" style="font-size:40px;padding:25px 0px;" onclick="AddNmber('6');">6</div>
+            </div>
+            <div class="row">
+                <div class="col col-xs-3 keyPadBtn" style="font-size:40px;padding:25px 0px;" onclick="AddNmber('7');">7</div>
+                <div class="col col-xs-3 keyPadBtn" style="font-size:40px;padding:25px 0px;" onclick="AddNmber('8');">8</div>
+                <div class="col col-xs-3 keyPadBtn" style="font-size:40px;padding:25px 0px;" onclick="AddNmber('9');">9</div>
+            </div>
+            <div class="row">
+                <div class="col col-xs-3 keyPadBtn" style="font-size:40px;padding:25px 0px;" onclick="backSpace();">&lt;</div>
+                <div class="col col-xs-3 keyPadBtn" style="font-size:40px;padding:25px 0px;" onclick="AddNmber('0');">0</div>
+                <div class="col col-xs-3 keyPadBtn" style="font-size:40px;padding:25px 0px;" onclick="AddNmber('+');">+</div>
+            </div>
+        </div>
+        
+    </div> 
+    <br /> 
+    <div class="col col-md-offset-2 col-md-12">
+        <div class="col col-xs-3 keyPadBtn"
+             style="color:white; padding:30px 0px; font-size:24px;
+                 margin-bottom:10px" onclick="return Save();">
+            TOKEN
+        </div>
+        <div class="col col-xs-3 keyPadBtn" style="font-size:24px;padding:30px 0px;" onclick="return sms();">
+            SMS
+        </div>
+        <div class="col col-xs-3 keyPadBtn" style="font-size:24px; padding:30px 0px;" onclick="printDiv('printableArea')">
+            PRINT
+        </div>
+    </div> 
+</div>
+<br/><br/>
+
+    @section scripts{
+     <script src="~/Scripts/sqms/token-queue.js"></script>
+
+    }
+
+

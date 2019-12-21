@@ -1,0 +1,54 @@
+﻿@model qms.ViewModels.VMDepartmentScroll
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+@{
+    ViewBag.Title = "Scroll Edit";
+}
+<div class="container">
+    <div class="row">
+        <h4 class="page-head-line">Department Scroll > Edit</h4>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.department_scroll_id)
+            @Html.HiddenFor(model => model.department_id)
+            @Html.HiddenFor(model => model.is_active)
+            @Html.HiddenFor(model => model.is_publish)
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <div class="col-md-8">
+                    Department: @Html.TextBoxFor(m => m.department_name, new { @disabled = "disabled", @class = "form-control Next" })
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-8">
+                    @Html.DropDownList("scroll_id", null, "Select One Content", htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.scroll_id, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-6">
+                    <input type="submit" value="Update" class="btn btn-color" />
+                    <a href='@Url.Action("Index")'>
+                        <button class="btn btn-color">Back to List</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        }
+    </div>
+</div>
+
